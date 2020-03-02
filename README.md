@@ -16,8 +16,7 @@
 - Alcohol 1: 49
 - Alcohol 2: 47
 - Alcohol 3: 45
-- Alcohol 4: 43
-- End: 41
+- End: 43 (Also alcohol 4)
 
 ### stepper:
 

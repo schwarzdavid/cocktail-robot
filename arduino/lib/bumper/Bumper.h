@@ -1,16 +1,20 @@
-#include <Arduino.h>
+#include "Actor.h"
 
 #ifndef __BUMPER_H
 #define __BUMPER_H
 
-class Bumper
+class Bumper : public Actor
 {
 private:
-    int pin, position;
-    String name;
+    int pin;
 
 public:
-    Bumper(/* args */);
+    String name;
+    int position;
+
+    Bumper(int pin, int pos, String name);
+    void setup();
+    bool isPressed();
 };
 
 #endif
