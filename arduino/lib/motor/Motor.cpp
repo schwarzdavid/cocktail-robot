@@ -52,11 +52,12 @@ void Motor::setSpeed(int speed)
     if (speed == 0)
     {
         timeout = 0;
+        next_tick = -1;
     }
     else
     {
         timeout = map(speed, 0, 100, MIN_SPEED, MAX_SPEED);
-        tick();
+        tick(micros());
     }
 }
 
