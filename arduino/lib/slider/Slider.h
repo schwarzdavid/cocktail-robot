@@ -7,16 +7,20 @@
 class Slider : public Actor
 {
 private:
-    static int MAX_SPEED, LENGTH;
-    int position, enabled, direction, pulse, stop_count, tick_value;
-    bool busy;
-    unsigned long tick_time;
-    Bumper *bumper_start, *bumper_end, *target;
-    Bumper *stops[4];
+    static int MAX_SPEED, MIN_SPEED, LENGTH;
+    
+    int enabled, direction, pulse, stops_count, pulse_value, position, start_position;
+    unsigned long next_tick_time, start_time;
+    Bumper *target;
+    Bumper *stops[6];
 
     void start_movement(Bumper* target);
+    void move();
+    void check_position();
 
 public:
+    bool busy;
+
     Slider(int ena, int dir, int pul);
     void set_start(int pin);
     void set_end(int pin);
@@ -24,7 +28,7 @@ public:
     void setup();
     void tick();
     void move_to(String name);
-    void move();
+    void move_to_start();
 };
 
 #endif

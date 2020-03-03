@@ -14,6 +14,8 @@ int STEPPER_PULSE = 52;
 
 Slider slider(STEPPER_ENABLED, STEPPER_DIR, STEPPER_PULSE);
 
+bool isAtStart = true;
+
 void setup()
 {
 	Serial.begin(9600);
@@ -25,11 +27,22 @@ void setup()
 	slider.add_stop(BUMPER_ALC_2, 625, "alc2");
 	slider.add_stop(BUMPER_ALC_3, 760, "alc3");
 	slider.setup();
-	
-	slider.move_to("start");
+
+	slider.move_to_start();
 }
 
 void loop()
 {
 	slider.tick();
+
+	if (!slider.busy)
+	{
+		if(isAtStart){
+			slider.move_to("alc2");
+			isAtStart = false;
+		} else {
+			slider.move_to_start();
+			isAtStart = true;
+		}
+	}
 }
