@@ -1,6 +1,5 @@
 #include "Actor.h"
 #include "Bumper.h"
-#include "Motor.h"
 
 #ifndef __SLIDER_H
 #define __SLIDER_H
@@ -16,7 +15,6 @@ private:
     unsigned long next_tick_time, start_time;
     Bumper *target;
     Bumper *stops[6];
-    Motor *motor;
 
     void move(Bumper* target);
     void check_position();
