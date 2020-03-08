@@ -4,10 +4,27 @@
 		"noImplicitAny": true,
 		"noImplicitReturns": true,
 		"noImplicitThis": true,
-		"noImplicitUseStrict": true,
+		"noFallthroughCasesInSwitch": true,
 		"strictNullChecks": true,
 		"target": "ESNext",
 		"moduleResolution": "node",
-		"module": "CommonJS"
-	}
+		"module": "CommonJS",
+		"alwaysStrict": true,
+		"forceConsistentCasingInFileNames": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"lib": [
+			"ESNext",
+			"DOM",
+			"ScriptHost"
+		],
+		"outDir": "dist/"
+	},
+	"exclude": [
+		"node_modules",
+		"src/renderer"
+	],
+	"include": [
+		"src/**/*"
+	]
 }
