@@ -28,7 +28,13 @@ const config = {
 			},
 			{
 				test: /\.ts$/,
-				use: ['ts-loader'],
+				use: [{
+					loader: 'ts-loader',
+					options: {
+						appendTsSuffixTo: [/\.vue$/],
+						configFile: path.join(__dirname, 'tsconfig.renderer.json')
+					}
+				}],
 				exclude: /node_modules/
 			},
 			{
