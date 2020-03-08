@@ -33,15 +33,15 @@ void setup()
 	slider.add_stop(BUMPER_ALC_4, 930, "alc4");
 	slider.setup();
 
-	dispenser.add(DISPENSER_ALC_1, "alc1", 60, 175);
-	dispenser.add(DISPENSER_ALC_2, "alc2", 0, 110);
-	dispenser.add(DISPENSER_ALC_3, "alc3", -20, 90);
-	dispenser.add(DISPENSER_ALC_4, "alc4", -20, 90);
+	dispenser.add(DISPENSER_ALC_1, "alc1", 25);
+	dispenser.add(DISPENSER_ALC_2, "alc2", 30);
+	dispenser.add(DISPENSER_ALC_3, "alc3", 30);
+	dispenser.add(DISPENSER_ALC_4, "alc4", 25);
 	dispenser.setup();
 
-	digitalWrite(STEPPER_ENABLED, HIGH);
+	/*digitalWrite(STEPPER_ENABLED, HIGH);
 	slider.move_to("alc1");
-	delay(2000);
+	delay(2000);*/
 	for(int i = 0; i < 5; i++){
 		dispenser.pour("alc1");
 	}

@@ -7,7 +7,7 @@
 
 struct dispenser
 {
-    int pin, low, high;
+    int pin, low;
     String name;
     Servo servo;
 };
@@ -15,11 +15,13 @@ struct dispenser
 class Dispenser: public Actor
 {
 private:
+    static int HIGH_INCREASE;
+
     int dispenser_count = 0;
     dispenser dispensers[4];
 
 public:
-    void add(int pin, String name, int low_pos, int high_pos);
+    void add(int pin, String name, int low_pos);
     void setup();
     void pour(String name);
     void pour(int i);
