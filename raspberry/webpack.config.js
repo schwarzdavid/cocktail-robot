@@ -5,9 +5,10 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const isDev = process.env.NODE_ENV === 'development';
 const isProd = process.env.NODE_ENV === 'production';
+const src = path.join(__dirname, 'src/renderer');
 
 const config = {
-	entry: path.join(__dirname, 'src/renderer/index.ts'),
+	entry: path.join(src, '/index.ts'),
 	target: 'electron-renderer',
 	output: {
 		path: path.join(__dirname, 'dist/renderer/')
@@ -16,7 +17,8 @@ const config = {
 	mode: isProd ? 'production' : 'development',
 	resolve: {
 		alias: {
-			'~': path.join(__dirname, 'node_modules')
+			'~': path.join(__dirname, 'node_modules'),
+			'@assets': path.join(src, 'assets')
 		},
 		extensions: ['*', '.vue', '.js', '.json', '.ts']
 	},
@@ -28,13 +30,18 @@ const config = {
 			},
 			{
 				test: /\.ts$/,
-				use: [{
+				use: ['babel-loader', {
 					loader: 'ts-loader',
 					options: {
 						appendTsSuffixTo: [/\.vue$/],
 						configFile: path.join(__dirname, 'tsconfig.renderer.json')
 					}
 				}],
+				exclude: /node_modules/
+			},
+			{
+				test: /\.js$/,
+				use: ['babel-loader'],
 				exclude: /node_modules/
 			},
 			{
@@ -47,7 +54,7 @@ const config = {
 						loader: 'sass-loader',
 						options: {
 							sourceMap: true,
-							sourceMapContents: false
+							prependData: '@import "@assets/scss/variables.scss";'
 						}
 					}
 				]
@@ -72,6 +79,10 @@ const config = {
 				}]
 			}
 		]
+	},
+	optimization: {
+		nodeEnv: isProd ? 'production' : 'development',
+		minimize: isProd
 	},
 	plugins: [
 		new VueLoaderPlugin(),

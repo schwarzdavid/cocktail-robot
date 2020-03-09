@@ -6,13 +6,18 @@
   "scripts": {
     "build:renderer:dev": "cross-env NODE_ENV=development ./node_modules/.bin/webpack",
     "build:main:dev": "cross-env NODE_ENV=development ./node_modules/.bin/tsc --p tsconfig.main.json",
-    "start": "./node_modules/.bin/electron src/index.js"
+    "start": "./node_modules/.bin/electron dist/main/index.js"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@babel/core": "^7.8.7",
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "@babel/plugin-proposal-decorators": "^7.8.3",
+    "@babel/preset-env": "^7.8.7",
     "@types/electron": "^1.6.10",
     "@types/node": "^13.9.0",
+    "babel-loader": "^8.0.6",
     "cross-env": "^7.0.2",
     "css-loader": "^3.4.2",
     "electron": "^8.0.2",

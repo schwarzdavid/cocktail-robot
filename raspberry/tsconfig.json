@@ -13,6 +13,7 @@
 		"forceConsistentCasingInFileNames": true,
 		"noUnusedLocals": true,
 		"noUnusedParameters": true,
+		"experimentalDecorators": true,
 		"lib": [
 			"ESNext",
 			"DOM",
