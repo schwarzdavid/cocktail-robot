@@ -18,6 +18,11 @@ int DISPENSER_ALC_2 = 25;
 int DISPENSER_ALC_3 = 27;
 int DISPENSER_ALC_4 = 29;
 
+int JUICE_1 = 28;
+int JUICE_2 = 26;
+int JUICE_3 = 24;
+int JUICE_4 = 22;
+
 Slider slider(STEPPER_ENABLED, STEPPER_DIR, STEPPER_PULSE);
 Dispenser dispenser;
 
@@ -39,15 +44,23 @@ void setup()
 	dispenser.add(DISPENSER_ALC_4, "alc4", 25);
 	dispenser.setup();
 
-	/*digitalWrite(STEPPER_ENABLED, HIGH);
+	digitalWrite(JUICE_1, HIGH);
+	digitalWrite(JUICE_2, HIGH);
+	digitalWrite(JUICE_3, HIGH);
+	digitalWrite(JUICE_4, HIGH);
+	pinMode(JUICE_1, OUTPUT);
+	pinMode(JUICE_2, OUTPUT);
+	pinMode(JUICE_3, OUTPUT);
+	pinMode(JUICE_4, OUTPUT);
+
+	digitalWrite(STEPPER_ENABLED, HIGH);
 	slider.move_to("alc1");
-	delay(2000);*/
-	for(int i = 0; i < 5; i++){
+	delay(2000);
+	for(int i = 0; i < 1; i++){
 		dispenser.pour("alc1");
 	}
 }
 
 void loop()
 {
-	
 }

@@ -1,6 +1,6 @@
 #include "Dispenser.h"
 
-int Dispenser::HIGH_INCREASE = 130;
+int Dispenser::HIGH_INCREASE = 120;
 
 void Dispenser::add(int pin, String name, int low)
 {
@@ -23,11 +23,7 @@ void Dispenser::setup()
 
 void Dispenser::pour(int i){
     dispensers[i].servo.write(dispensers[i].low + HIGH_INCREASE);
-    delay(5500);
-    dispensers[i].servo.write(dispensers[i].low);
-    delay(800);
-    dispensers[i].servo.write(dispensers[i].low + 90);
-    delay(800);
+    delay(5000);
     dispensers[i].servo.write(dispensers[i].low);
     delay(3000);
 }
