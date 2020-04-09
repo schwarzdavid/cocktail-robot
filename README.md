@@ -1,8 +1,12 @@
-# cocktail-robot
+# Cocktail Robot
+
+![General View](overview.jpg)
+
+![Electronics](electronics.jpg)
 
 ## pins
 
-### relais;
+### relais.
 
 - Relay 1: 28
 - Relay 2: 26
@@ -20,3 +24,13 @@
 
 ### stepper:
 
+enable = 48;
+direction = 50;
+pulse = 52;
+
+### servos:
+
+int servo_1 = 23;
+int servo_2 = 25;
+int servo_3 = 27;
+int servo_4 = 29;
