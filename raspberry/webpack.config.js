@@ -18,7 +18,8 @@ const config = {
 	resolve: {
 		alias: {
 			'~': path.join(__dirname, 'node_modules'),
-			'@assets': path.join(src, 'assets')
+			'@css': path.join(src, 'assets/scss'),
+			'@img': path.join(src, 'assets/img')
 		},
 		extensions: ['*', '.vue', '.js', '.json', '.ts']
 	},
@@ -54,7 +55,7 @@ const config = {
 						loader: 'sass-loader',
 						options: {
 							sourceMap: true,
-							prependData: '@import "@assets/scss/variables.scss";'
+							prependData: '@import "@css/variables.scss";'
 						}
 					}
 				]

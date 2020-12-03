@@ -6,7 +6,7 @@
 		"noImplicitThis": true,
 		"noFallthroughCasesInSwitch": true,
 		"strictNullChecks": true,
-		"target": "ESNext",
+		"target": "es2018",
 		"moduleResolution": "node",
 		"module": "CommonJS",
 		"alwaysStrict": true,
@@ -18,8 +18,9 @@
 			"ESNext",
 			"DOM",
 			"ScriptHost"
-		]
-	},
+		],
+      "allowSyntheticDefaultImports": true
+    },
 	"exclude": [
 		"node_modules"
 	],
