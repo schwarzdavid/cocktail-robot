@@ -1,0 +1,9 @@
+FROM node:14
+WORKDIR /usr/src/raspberry
+COPY package*.json ./
+RUN npm install
+COPY . .
+RUN npm run build:raspi
+
+FROM scratch as result
+COPY --from=0 /usr/src/raspberry/dist_electron .

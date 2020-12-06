@@ -1,16 +1,16 @@
 module.exports = {
     root: true,
     env: {
-        node: true,
+        node: true
     },
     extends: [
         'plugin:vue/essential',
         'eslint:recommended',
         '@vue/airbnb',
-        '@vue/typescript/recommended',
+        '@vue/typescript/recommended'
     ],
     parserOptions: {
-        ecmaVersion: 2020,
+        ecmaVersion: 2020
     },
     rules: {
         'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
@@ -23,14 +23,14 @@ module.exports = {
         'vue/script-indent': ['error', 4, {
             baseIndent: 1,
             switchCase: 1,
-            ignores: [],
+            ignores: []
         }],
         'linebreak-style': ['error', 'windows'],
         'max-len': ['warn', 120],
         'import/prefer-default-export': 'off',
         'import/no-default-export': ['error'],
         'import/extensions': ['error', 'never', {
-            'vue': 'always'
+            vue: 'always'
         }],
         'import/no-unresolved': 'off',
         'comma-dangle': ['error', 'never'],
@@ -46,10 +46,12 @@ module.exports = {
             }
         }],
         'lines-between-class-members': ['error', 'always', {
-            'exceptAfterSingleLine': true
+            exceptAfterSingleLine: true
         }],
         'arrow-parens': ['warn', 'as-needed'],
-        'spaced-comment': 'off'
+        'spaced-comment': 'off',
+        'no-useless-constructor': 'off',
+        '@typescript-eslint/no-useless-constructor': 'error'
     },
     overrides: [
         {
@@ -57,8 +59,15 @@ module.exports = {
             rules: {
                 indent: 'off',
                 'import/prefer-default-export': ['error'],
-                'import/no-default-export': 'off',
+                'import/no-default-export': 'off'
+            }
+        },
+        {
+            files: ['*.d.ts'],
+            rules: {
+                'import/prefer-default-export': ['error'],
+                'import/no-default-export': 'off'
             }
         }
-    ],
+    ]
 };
