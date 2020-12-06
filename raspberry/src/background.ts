@@ -11,11 +11,11 @@ protocol.registerSchemesAsPrivileged([
 
 async function createWindow() {
     let windowOptions: BrowserWindowConstructorOptions = {
-        width: 1024,
-        height: 600,
         webPreferences: {
             nodeIntegration: true
-        }
+        },
+        resizable: false,
+        maximizable: false
     }
 
     if (!isDevelopment) {
@@ -25,9 +25,14 @@ async function createWindow() {
             fullscreen: true,
             frame: false,
             autoHideMenuBar: true,
-            closable: false,
             minimizable: false,
-            resizable: false
+            closable: false,
+        }
+    } else {
+        windowOptions = {
+            ...windowOptions,
+            width: 1024,
+            height: 656
         }
     }
 
@@ -35,6 +40,9 @@ async function createWindow() {
 
     if (!isDevelopment) {
         win.setMenu(null);
+        win.webContents.on('dom-ready', () => {
+            win.webContents.insertCSS('* {cursor:none !important;}');
+        });
     }
 
     if (process.env.WEBPACK_DEV_SERVER_URL) {
@@ -71,12 +79,8 @@ app.on('ready', async () => {
     createWindow();
 });
 
-const launcher = new AutoLaunch({
-    name: 'Cocktail Robot'
-});
 
 if (isDevelopment) {
-    launcher.disable();
     if (process.platform === 'win32') {
         process.on('message', data => {
             if (data === 'graceful-exit') {
@@ -89,5 +93,8 @@ if (isDevelopment) {
         });
     }
 } else {
+    const launcher = new AutoLaunch({
+        name: 'Cocktail Robot'
+    });
     launcher.enable();
 }

@@ -1,61 +1,48 @@
 <template>
-  <v-app>
-    <v-app-bar
-      app
-      color="primary"
-      dark
-    >
-      <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40"
-        />
+    <v-app :style="{background: $vuetify.theme.currentTheme.background}">
+        <v-app-bar app flat fixed height="80" color="transparent">
+            <div class="d-flex align-center mt-3 px-3">
+                <v-app-bar-nav-icon @click="menuVisible = true"/>
+            </div>
+        </v-app-bar>
 
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
-      </div>
+        <v-navigation-drawer v-model="menuVisible" fixed width="80%">
+            <h1>Test</h1>
+        </v-navigation-drawer>
 
-      <v-spacer></v-spacer>
-
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
-      >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>
-    </v-app-bar>
-
-    <v-main>
-      <HelloWorld/>
-    </v-main>
-  </v-app>
+        <v-main>
+            <router-view/>
+        </v-main>
+    </v-app>
 </template>
 
 <script lang="ts">
-    import Vue from 'vue';
-    import HelloWorld from './components/HelloWorld.vue';
 
-    export default Vue.extend({
-        name: 'App',
+    import {Component, Vue} from 'vue-property-decorator';
 
-        components: {
-            HelloWorld
-        },
-
-        data: () => ({
-            //
-        })
-    });
+    @Component
+    export default class App extends Vue {
+        private menuVisible = false;
+    }
 </script>
+
+<style lang="scss">
+    html, body {
+        overflow: hidden;
+    }
+
+    *, *:before, *:after {
+        user-select: none;
+        touch-action: manipulation;
+        -webkit-touch-callout: none;
+    }
+
+    .v-navigation-drawer {
+        transition-duration: .5s !important;
+    }
+
+    .container {
+        padding-left: 32px !important;
+        padding-right: 32px !important;
+    }
+</style>
