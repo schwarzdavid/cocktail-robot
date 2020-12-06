@@ -18,11 +18,15 @@ const routes: Array<RouteConfig> = [
         path: '/about',
         name: 'About',
         component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    },
+    {
+        path: '*',
+        redirect: {name: ROUTES.DASHBOARD}
     }
 ];
 
 export const router = new VueRouter({
-    mode: 'history',
+    mode: 'hash',
     base: process.env.BASE_URL,
     routes
 });

@@ -13,26 +13,24 @@ async function createWindow() {
     let windowOptions: BrowserWindowConstructorOptions = {
         webPreferences: {
             nodeIntegration: true
-        },
-        resizable: false,
-        maximizable: false
+        }
     }
 
-    if (!isDevelopment) {
+    if (isDevelopment) {
         windowOptions = {
             ...windowOptions,
-            kiosk: true,
-            fullscreen: true,
-            frame: false,
-            autoHideMenuBar: true,
-            minimizable: false,
-            closable: false,
+            width: 1024,
+            height: 656,
+            resizable: false,
+            maximizable: false
         }
     } else {
         windowOptions = {
             ...windowOptions,
-            width: 1024,
-            height: 656
+            kiosk: true,
+            frame: false,
+            minimizable: false,
+            closable: false,
         }
     }
 

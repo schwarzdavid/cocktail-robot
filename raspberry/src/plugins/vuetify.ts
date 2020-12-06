@@ -9,7 +9,7 @@ export const vuetify = new Vuetify({
     theme: {
         themes: {
             light: {
-                background: colors.grey.lighten4
+                background: colors.grey.lighten2
             }
         }
     },

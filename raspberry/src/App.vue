@@ -45,4 +45,15 @@
         padding-left: 32px !important;
         padding-right: 32px !important;
     }
+
+    .v-app-bar__nav-icon .v-icon {
+        height: 36px !important;
+        width: 36px !important;
+        font-size: 36px !important;
+        color: rgba(0, 0, 0, 0.87) !important;
+    }
+
+    .v-btn:not(.v-btn--text):not(.v-btn--outlined):focus:before {
+        opacity: 0 !important;
+    }
 </style>
