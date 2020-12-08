@@ -23,9 +23,17 @@
             </v-col>
             <v-col cols="6" align-self="stretch">
                 <div class="elevation-3 white px-5 py-5 d-flex flex-column" style="height:100%">
-                    <h2 class="text-h4">Your cocktail</h2>
-                    <div class="flex-grow-1">
-                        <p>No ingredients added</p>
+                    <h2 class="text-h4">Cocktail</h2>
+                    <div class="flex-grow-1 mt-3">
+                        <div v-if="!cocktail.ingredients.length" class="d-flex align-center justify-center"
+                             style="height:100%;">
+                            <p class="text-uppercase">Keine Getränke ausgewählt</p>
+                        </div>
+                        <div v-else v-sortable>
+                            <div v-for="(ingredient, index) in cocktail.ingredients" :key="index">
+                                {{ ingredient.type }} - {{ ingredient.amount }}
+                            </div>
+                        </div>
                     </div>
                     <div class="d-flex">
                         <v-btn color="primary" icon large>
@@ -44,11 +52,19 @@
 <script lang="ts">
     import {Component, Vue} from 'vue-property-decorator';
     import JuiceEdit from '@/components/JuiceEdit.vue';
+    import {SettingsModule} from '@/store/modules/SettingsModule';
+    import {getModule} from 'vuex-module-decorators';
+    import {Cocktail} from '@/store/types/Cocktail';
+    import {LiquidModule} from '@/store/modules/LiquidModule';
 
-    @Component({
-        components: {JuiceEdit}
-    })
+    @Component({components: {JuiceEdit}})
     export default class Dashboard extends Vue {
+        private settingsModule: SettingsModule = getModule(SettingsModule, this.$store);
+        private liquidModule: LiquidModule = getModule(LiquidModule, this.$store);
+
+        private get cocktail(): Cocktail {
+            return this.settingsModule.preparedCocktail;
+        }
     }
 </script>
 

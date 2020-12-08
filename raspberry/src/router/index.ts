@@ -1,27 +1,36 @@
 import Vue from 'vue';
 import VueRouter, {RouteConfig} from 'vue-router';
+import Setup from '@/views/Setup.vue';
+import Liquids from '@/views/Liquids.vue';
 import Dashboard from '../views/Dashboard.vue';
 
 Vue.use(VueRouter);
 
 export enum ROUTES {
-    DASHBOARD = 'DASHBOARD'
+    DASHBOARD = 'DASHBOARD',
+    SETUP = 'SETUP',
+    LIQUIDS = 'LIQUIDS'
 }
 
 const routes: Array<RouteConfig> = [
     {
-        path: '/',
+        path: '/dashboard',
         name: ROUTES.DASHBOARD,
         component: Dashboard
     },
     {
-        path: '/about',
-        name: 'About',
-        component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+        path: '/setup',
+        name: ROUTES.SETUP,
+        component: Setup
+    },
+    {
+        path: '/liquids',
+        name: ROUTES.LIQUIDS,
+        component: Liquids
     },
     {
         path: '*',
-        redirect: {name: ROUTES.DASHBOARD}
+        redirect: {name: ROUTES.SETUP}
     }
 ];
 

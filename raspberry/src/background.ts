@@ -6,15 +6,16 @@ import AutoLaunch from 'auto-launch';
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
 protocol.registerSchemesAsPrivileged([
-    {scheme: 'app', privileges: {secure: true, standard: true}}
+    {
+        scheme: 'app',
+        privileges: {
+            secure: true, standard: true
+        }
+    }
 ]);
 
 async function createWindow() {
-    let windowOptions: BrowserWindowConstructorOptions = {
-        webPreferences: {
-            nodeIntegration: true
-        }
-    }
+    let windowOptions: BrowserWindowConstructorOptions = {webPreferences: {nodeIntegration: true}};
 
     if (isDevelopment) {
         windowOptions = {
@@ -23,15 +24,15 @@ async function createWindow() {
             height: 656,
             resizable: false,
             maximizable: false
-        }
+        };
     } else {
         windowOptions = {
             ...windowOptions,
             kiosk: true,
             frame: false,
             minimizable: false,
-            closable: false,
-        }
+            closable: false
+        };
     }
 
     const win = new BrowserWindow(windowOptions);
@@ -66,7 +67,7 @@ app.on('activate', () => {
     }
 });
 
-app.on('ready', async () => {
+app.on('ready', async() => {
     if (isDevelopment && !process.env.IS_TEST) {
         try {
             await installExtension(VUEJS_DEVTOOLS);
@@ -76,7 +77,6 @@ app.on('ready', async () => {
     }
     createWindow();
 });
-
 
 if (isDevelopment) {
     if (process.platform === 'win32') {
@@ -91,8 +91,6 @@ if (isDevelopment) {
         });
     }
 } else {
-    const launcher = new AutoLaunch({
-        name: 'Cocktail Robot'
-    });
+    const launcher = new AutoLaunch({name: 'Cocktail Robot'});
     launcher.enable();
 }

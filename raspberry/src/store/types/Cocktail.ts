@@ -12,6 +12,8 @@ export interface AlcoholIngredient extends Ingredient {
     type: 'alc'
 }
 
+export type Ingredients = Array<JuiceIngredient | AlcoholIngredient>
+
 export interface Cocktail {
-    ingredients: Array<JuiceIngredient | AlcoholIngredient>
+    ingredients: Ingredients
 }
