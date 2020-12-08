@@ -1,13 +1,17 @@
 module.exports = {
     root: true,
-    env: {node: true},
+    env: {
+        node: true
+    },
     extends: [
         'plugin:vue/essential',
         'eslint:recommended',
         '@vue/airbnb',
         '@vue/typescript/recommended'
     ],
-    parserOptions: {ecmaVersion: 2020},
+    parserOptions: {
+        ecmaVersion: 2020
+    },
     rules: {
         'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
         'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
@@ -17,7 +21,7 @@ module.exports = {
         quotes: ['error', 'single'],
         'object-curly-spacing': ['error', 'never'],
         'object-curly-newline': ['error', {
-            ObjectExpression: {minProperties: 2},
+            ObjectExpression: 'always',
             ObjectPattern: {
                 multiline: true,
                 minProperties: 3
@@ -37,7 +41,9 @@ module.exports = {
         'max-len': ['warn', 120],
         'import/prefer-default-export': 'off',
         'import/no-default-export': ['error'],
-        'import/extensions': ['error', 'never', {vue: 'always'}],
+        'import/extensions': ['error', 'never', {
+            vue: 'always'
+        }],
         'import/no-unresolved': 'off',
         'comma-dangle': ['error', 'never'],
         'no-trailing-spaces': ['warn'],
@@ -51,7 +57,9 @@ module.exports = {
                 requireLast: false
             }
         }],
-        'lines-between-class-members': ['error', 'always', {exceptAfterSingleLine: true}],
+        'lines-between-class-members': ['error', 'always', {
+            exceptAfterSingleLine: true
+        }],
         'arrow-parens': ['warn', 'as-needed'],
         'spaced-comment': 'off',
         'no-useless-constructor': 'off',

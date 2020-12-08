@@ -34,7 +34,7 @@
                         </div>
                         <div class="mx-3">
                             <v-btn outlined class="letter" large>
-                                <v-icon style="font-size:1.25rem;">backspace</v-icon>
+                                <v-icon style="font-size:1.25rem;" @click="removeLastCharacter()">backspace</v-icon>
                             </v-btn>
                         </div>
                     </div>
@@ -78,15 +78,16 @@
         @ModelSync('value', 'input')
         textContent!: string;
 
-        mounted() {
-            console.log(this.textContent);
-        }
-
         private dialogActive = false;
 
         @Emit('input')
         private addCharacter(char: string): string {
             return this.textContent + char;
+        }
+
+        @Emit('input')
+        private removeLastCharacter(): string {
+            return this.textContent.slice(0, -1);
         }
 
         @Emit('confirm')

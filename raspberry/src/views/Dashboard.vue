@@ -57,7 +57,11 @@
     import {Cocktail} from '@/store/types/Cocktail';
     import {LiquidModule} from '@/store/modules/LiquidModule';
 
-    @Component({components: {JuiceEdit}})
+    @Component({
+        components: {
+            JuiceEdit
+        }
+    })
     export default class Dashboard extends Vue {
         private settingsModule: SettingsModule = getModule(SettingsModule, this.$store);
         private liquidModule: LiquidModule = getModule(LiquidModule, this.$store);

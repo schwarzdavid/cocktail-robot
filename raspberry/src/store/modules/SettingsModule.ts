@@ -9,7 +9,9 @@ export interface SettingsModuleState {
     preparedCocktail: Cocktail
 }
 
-@Module({name: 'settings'})
+@Module({
+    name: 'settings'
+})
 export class SettingsModule extends VuexModule implements SettingsModuleState {
     installedAlcohols: LiquidStorage = [null, null, null, null];
 
@@ -20,6 +22,8 @@ export class SettingsModule extends VuexModule implements SettingsModuleState {
     preparedCocktail = SettingsModule.createEmptyCocktail();
 
     private static createEmptyCocktail(): Cocktail {
-        return {ingredients: []};
+        return {
+            ingredients: []
+        };
     }
 }

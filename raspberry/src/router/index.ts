@@ -30,7 +30,9 @@ const routes: Array<RouteConfig> = [
     },
     {
         path: '*',
-        redirect: {name: ROUTES.SETUP}
+        redirect: {
+            name: ROUTES.SETUP
+        }
     }
 ];
 

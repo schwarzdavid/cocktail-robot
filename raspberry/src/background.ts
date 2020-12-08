@@ -15,7 +15,11 @@ protocol.registerSchemesAsPrivileged([
 ]);
 
 async function createWindow() {
-    let windowOptions: BrowserWindowConstructorOptions = {webPreferences: {nodeIntegration: true}};
+    let windowOptions: BrowserWindowConstructorOptions = {
+        webPreferences: {
+            nodeIntegration: true
+        }
+    };
 
     if (isDevelopment) {
         windowOptions = {
@@ -47,7 +51,9 @@ async function createWindow() {
     if (process.env.WEBPACK_DEV_SERVER_URL) {
         await win.loadURL(process.env.WEBPACK_DEV_SERVER_URL as string);
         if (!process.env.IS_TEST) {
-            win.webContents.openDevTools({mode: 'detach'});
+            win.webContents.openDevTools({
+                mode: 'detach'
+            });
         }
     } else {
         createProtocol('app');
@@ -91,6 +97,8 @@ if (isDevelopment) {
         });
     }
 } else {
-    const launcher = new AutoLaunch({name: 'Cocktail Robot'});
+    const launcher = new AutoLaunch({
+        name: 'Cocktail Robot'
+    });
     launcher.enable();
 }
