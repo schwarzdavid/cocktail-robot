@@ -1,8 +1,8 @@
-export interface LiquidStorage {
-    0: number | null,
-    1: number | null,
-    2: number | null,
-    3: number | null
+export interface LiquidStorage<T> {
+    0: T,
+    1: T,
+    2: T,
+    3: T
 }
 
 export interface Liquid {

@@ -3,8 +3,8 @@ import {LiquidStorage} from '@/store/types/LiquidTypes';
 import {Cocktail} from '@/store/types/Cocktail';
 
 export interface SettingsModuleState {
-    installedAlcohols: LiquidStorage,
-    installedJuices: LiquidStorage,
+    installedAlcohols: LiquidStorage<number | null>,
+    installedJuices: LiquidStorage<number | null>,
     cupSize: number,
     preparedCocktail: Cocktail
 }
@@ -13,9 +13,9 @@ export interface SettingsModuleState {
     name: 'settings'
 })
 export class SettingsModule extends VuexModule implements SettingsModuleState {
-    installedAlcohols: LiquidStorage = [null, null, null, null];
+    installedAlcohols: LiquidStorage<number | null> = [null, null, null, null];
 
-    installedJuices: LiquidStorage = [null, null, null, null];
+    installedJuices: LiquidStorage<number | null> = [null, null, null, null];
 
     cupSize = 250;
 
