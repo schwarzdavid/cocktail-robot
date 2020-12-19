@@ -63,7 +63,9 @@ module.exports = {
         'arrow-parens': ['warn', 'as-needed'],
         'spaced-comment': 'off',
         'no-useless-constructor': 'off',
-        '@typescript-eslint/no-useless-constructor': 'error'
+        '@typescript-eslint/no-useless-constructor': 'error',
+        'no-plusplus': 'off',
+        'no-underscore-dangle': 'off'
     },
     overrides: [
         {

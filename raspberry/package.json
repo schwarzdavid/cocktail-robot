@@ -19,6 +19,8 @@
     "electron-devtools-installer": "^3.1.0",
     "material-design-icons-iconfont": "^6.1.0",
     "reflect-metadata": "^0.1.13",
+    "serialport": "^9.0.4",
+    "tiny-typed-emitter": "^2.0.3",
     "vue": "^2.6.11",
     "vue-class-component": "^7.2.3",
     "vue-cli-plugin-electron-builder": "~2.0.0-rc.5",
@@ -32,6 +34,7 @@
   },
   "devDependencies": {
     "@types/electron-devtools-installer": "^2.2.0",
+    "@types/serialport": "^8.0.1",
     "@typescript-eslint/eslint-plugin": "^2.33.0",
     "@typescript-eslint/parser": "^2.33.0",
     "@vue/cli-plugin-eslint": "~4.5.0",

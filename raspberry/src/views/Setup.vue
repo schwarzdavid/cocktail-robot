@@ -10,8 +10,10 @@
                                 <span class="d-block text-subtitle-1 text-uppercase font-weight-bold">
                                     Position {{ parseInt(index) + 1 }}
                                 </span>
-                                <select-liquid v-slot:default="{on, attr}" :liquids="alcohols">
-                                    <v-btn block depressed large class="mt-4" v-on="on" v-bind="attr">
+                                <select-liquid v-slot:default="{on, attr}" :liquids="alcohols"
+                                               :value="alc ? alc.id : null"
+                                               @select="alcId => setSelectedAlcohol(index, alcId)">
+                                    <v-btn block depressed large class="mt-4" v-on="on" v-bind="attr" color="accent">
                                         <span v-if="alc">{{ alc.name }}</span>
                                         <span v-else>Leer</span>
                                     </v-btn>
@@ -30,10 +32,14 @@
                                 <span class="d-block text-subtitle-1 text-uppercase font-weight-bold">
                                     Position {{ parseInt(index) + 1 }}
                                 </span>
-                                <v-btn block depressed large class="mt-4">
-                                    <span v-if="juice">{{ juice.name }}</span>
-                                    <span v-else>Leer</span>
-                                </v-btn>
+                                <select-liquid v-slot:default="{on, attr}" :liquids="juices"
+                                               :value="juice ? juice.id : null"
+                                               @select="juiceId => setSelectedJuice(index, juiceId)">
+                                    <v-btn block depressed large class="mt-4" v-on="on" v-bind="attr" color="accent">
+                                        <span v-if="juice">{{ juice.name }}</span>
+                                        <span v-else>Leer</span>
+                                    </v-btn>
+                                </select-liquid>
                             </v-col>
                         </v-row>
                     </v-card-text>
@@ -49,11 +55,12 @@
 
 <script lang="ts">
     import {Component, Vue} from 'vue-property-decorator';
-    import {Liquid, LiquidStorage} from '@/store/types/LiquidTypes';
+    import {Liquid, LiquidStorage, LiquidStoragePosition} from '@/store/types/LiquidTypes';
     import {getModule} from 'vuex-module-decorators';
     import {LiquidModule} from '@/store/modules/LiquidModule';
     import {SettingsModule} from '@/store/modules/SettingsModule';
     import SelectLiquid from '@/components/SelectLiquid.vue';
+    import {LiquidHelper} from '@/store/helper/LiquidHelper';
 
     @Component({
         components: {
@@ -64,22 +71,22 @@
         private readonly liquidModule = getModule(LiquidModule, this.$store);
         private readonly settingsModule = getModule(SettingsModule, this.$store);
 
+        // eslint-disable-next-line class-methods-use-this
         private get installedAlcohols(): LiquidStorage<Liquid | null> {
-            return {
-                0: this.getAlcoholById(this.settingsModule.installedAlcohols[0]),
-                1: this.getAlcoholById(this.settingsModule.installedAlcohols[1]),
-                2: this.getAlcoholById(this.settingsModule.installedAlcohols[2]),
-                3: this.getAlcoholById(this.settingsModule.installedAlcohols[3])
-            };
+            const output: LiquidStorage<Liquid | null> = [null, null, null, null];
+            for (let i = 0; i < 4; i++) {
+                output[i as LiquidStoragePosition] = LiquidHelper.getInstalledAlcohol(i as LiquidStoragePosition);
+            }
+            return output;
         }
 
+        // eslint-disable-next-line class-methods-use-this
         private get installedJuices(): LiquidStorage<Liquid | null> {
-            return {
-                0: this.getJuiceById(this.settingsModule.installedJuices[0]),
-                1: this.getJuiceById(this.settingsModule.installedJuices[1]),
-                2: this.getJuiceById(this.settingsModule.installedJuices[2]),
-                3: this.getJuiceById(this.settingsModule.installedJuices[3])
-            };
+            const output: LiquidStorage<Liquid | null> = [null, null, null, null];
+            for (let i = 0; i < 4; i++) {
+                output[i as LiquidStoragePosition] = LiquidHelper.getInstalledJuice(i as LiquidStoragePosition);
+            }
+            return output;
         }
 
         private get alcohols(): Liquid[] {
@@ -90,18 +97,18 @@
             return this.liquidModule.juices;
         }
 
-        private getAlcoholById(id: number | null): Liquid | null {
-            if (id === null) {
-                return null;
-            }
-            return this.liquidModule.alcohols.find(alcohol => alcohol.id === id) || null;
+        private setSelectedAlcohol(position: keyof LiquidStorage<number | null>, alcoholId: number | null) {
+            this.settingsModule.setInstalledAlcohol({
+                position,
+                alcoholId
+            });
         }
 
-        private getJuiceById(id: number | null): Liquid | null {
-            if (id === null) {
-                return null;
-            }
-            return this.liquidModule.juices.find(juice => juice.id === id) || null;
+        private setSelectedJuice(position: keyof LiquidStorage<number | null>, juiceId: number) {
+            this.settingsModule.setInstalledJuice({
+                position,
+                juiceId
+            });
         }
     }
 </script>

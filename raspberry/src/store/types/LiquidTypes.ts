@@ -9,3 +9,5 @@ export interface Liquid {
     id: number,
     name: string
 }
+
+export type LiquidStoragePosition = keyof LiquidStorage<number | null>;

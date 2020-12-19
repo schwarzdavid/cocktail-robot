@@ -17,7 +17,8 @@ protocol.registerSchemesAsPrivileged([
 async function createWindow() {
     let windowOptions: BrowserWindowConstructorOptions = {
         webPreferences: {
-            nodeIntegration: true
+            nodeIntegration: true,
+            enableRemoteModule: true
         }
     };
 

@@ -2,19 +2,23 @@
     <v-container fluid fill-height style="align-items: stretch">
         <v-row align="center">
             <v-col cols="6">
-                <h2 class="text-h5">Alkohol</h2>
+                <h2 class="text-h5">Spirituosen</h2>
                 <v-row>
-                    <v-col cols="6" v-for="i in 4" :key="i">
-                        <v-btn large block color="dark" depressed class="white">Item {{ i }}</v-btn>
+                    <v-col cols="6" v-for="(alcohol, index) in alcohols" :key="index">
+                        <v-btn large block color="dark" depressed class="white" :disabled="!alcohol"
+                               @click="addAlcohol(index)">
+                            {{ alcohol ? alcohol.name : 'Leer' }}
+                        </v-btn>
                     </v-col>
                 </v-row>
                 <h2 class="text-h5 mt-5">Mischgetränke</h2>
                 <v-row>
-                    <v-col cols="6" v-for="i in 4" :key="i">
+                    <v-col cols="6" v-for="(juice, index) in juices" :key="index">
                         <juice-edit>
                             <template v-slot:default="{on, attrs}">
-                                <v-btn large block color="dark" depressed class="white" v-bind="attrs" v-on="on">
-                                    Item {{ i }}
+                                <v-btn large block color="dark" depressed class="white" v-bind="attrs" v-on="on"
+                                       :disabled="!juice">
+                                    {{ juice ? juice.name : 'Leer' }}
                                 </v-btn>
                             </template>
                         </juice-edit>
@@ -31,7 +35,7 @@
                         </div>
                         <div v-else v-sortable>
                             <div v-for="(ingredient, index) in cocktail.ingredients" :key="index">
-                                {{ ingredient.type }} - {{ ingredient.amount }}
+                                {{ ingredient.type }} - {{ ingredient.position }} - {{ ingredient.amount }}
                             </div>
                         </div>
                     </div>
@@ -55,7 +59,9 @@
     import {SettingsModule} from '@/store/modules/SettingsModule';
     import {getModule} from 'vuex-module-decorators';
     import {Cocktail} from '@/store/types/Cocktail';
-    import {LiquidModule} from '@/store/modules/LiquidModule';
+    import {Liquid, LiquidStorage, LiquidStoragePosition} from '@/store/types/LiquidTypes';
+    import {LiquidHelper} from '@/store/helper/LiquidHelper';
+    import {CocktailModule} from '@/store/modules/CocktailModule';
 
     @Component({
         components: {
@@ -63,15 +69,33 @@
         }
     })
     export default class Dashboard extends Vue {
-        private settingsModule: SettingsModule = getModule(SettingsModule, this.$store);
-        private liquidModule: LiquidModule = getModule(LiquidModule, this.$store);
+        private readonly settingsModule: SettingsModule = getModule(SettingsModule, this.$store);
+        private readonly cocktailModule: CocktailModule = getModule(CocktailModule, this.$store);
 
         private get cocktail(): Cocktail {
-            return this.settingsModule.preparedCocktail;
+            return this.cocktailModule;
+        }
+
+        // eslint-disable-next-line class-methods-use-this
+        private get juices(): LiquidStorage<Liquid | null> {
+            const output: LiquidStorage<Liquid | null> = [null, null, null, null];
+            for (let i = 0; i < 4; i++) {
+                output[i as LiquidStoragePosition] = LiquidHelper.getInstalledJuice(i as LiquidStoragePosition);
+            }
+            return output;
+        }
+
+        // eslint-disable-next-line class-methods-use-this
+        private get alcohols(): LiquidStorage<Liquid | null> {
+            const output: LiquidStorage<Liquid | null> = [null, null, null, null];
+            for (let i = 0; i < 4; i++) {
+                output[i as LiquidStoragePosition] = LiquidHelper.getInstalledAlcohol(i as LiquidStoragePosition);
+            }
+            return output;
+        }
+
+        private addAlcohol(position: number) {
+            this.cocktailModule.addAlcohol(position);
         }
     }
 </script>
-
-<style lang="scss" scoped>
-
-</style>

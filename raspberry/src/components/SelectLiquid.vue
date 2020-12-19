@@ -17,7 +17,8 @@
                         <v-col cols="4">
                             <div class="d-flex align-stretch justify-space-between" style="height:100%;">
                                 <v-list style="width:100%;height:calc(100vh - 64px);overflow:scroll" class="pr-1 pl-2">
-                                    <v-list-item>
+                                    <v-list-item @click="selectedLiquidId = null"
+                                                 :input-value="selectedLiquidId === null" color="primary">
                                         <v-list-item-title class="text-uppercase font-italic">
                                             Nichts auswählen
                                         </v-list-item-title>
@@ -25,13 +26,14 @@
                                     <div v-if="sortedLiquids.length">
                                         <div v-for="liquid in sortedLiquids" :key="liquid.id">
                                             <v-divider></v-divider>
-                                            <v-list-item>
+                                            <v-list-item @click="selectedLiquidId = liquid.id"
+                                                         :input-value="selectedLiquidId === liquid.id" color="primary">
                                                 <v-list-item-title>{{ liquid.name }}</v-list-item-title>
                                             </v-list-item>
                                         </div>
                                     </div>
                                     <div v-else>
-                                        <v-list-item>
+                                        <v-list-item disabled>
                                             <v-list-item-title disabled class="text-uppercase">
                                                 Keine Getränke gefunden
                                             </v-list-item-title>
@@ -66,10 +68,11 @@
                                 <div>
                                     <v-divider></v-divider>
                                     <div class="d-flex align-center mt-5">
-                                        <v-btn large color="success">Hinzufügen</v-btn>
                                         <v-spacer></v-spacer>
-                                        <v-btn large text color="error">Abbrechen</v-btn>
-                                        <v-btn large color="primary" class="ml-3">Auswahl bestätigen</v-btn>
+                                        <v-btn large text color="error" @click="dialogActive = false">Abbrechen</v-btn>
+                                        <v-btn large color="primary" class="ml-3" @click="confirmSelectedLiquid">
+                                            Auswahl bestätigen
+                                        </v-btn>
                                     </div>
                                 </div>
                             </div>
@@ -82,7 +85,7 @@
 </template>
 
 <script lang="ts">
-    import {Component, Prop, Vue} from 'vue-property-decorator';
+    import {Component, Emit, Prop, Vue} from 'vue-property-decorator';
     import {Liquid} from '@/store/types/LiquidTypes';
 
     @Component
@@ -90,11 +93,15 @@
         @Prop()
         private readonly liquids!: Liquid[];
 
+        @Prop()
+        private readonly value!: number | null;
+
         private readonly alphabet = 'abcdefghijklmnopqrstuvwxyzäöü'.toUpperCase().split('');
         private readonly charsInRow = 8;
 
         private dialogActive = false;
         private charFilter = '';
+        private selectedLiquidId: number | null = null;
 
         private get sortedLiquids(): Liquid[] {
             return this.liquids
@@ -108,6 +115,12 @@
             } else {
                 this.charFilter = char;
             }
+        }
+
+        @Emit('select')
+        private confirmSelectedLiquid(): number | null {
+            this.dialogActive = false;
+            return this.selectedLiquidId;
         }
     }
 </script>
