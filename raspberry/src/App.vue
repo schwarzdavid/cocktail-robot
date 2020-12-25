@@ -16,15 +16,39 @@
             </div>
         </v-app-bar>
 
-        <v-navigation-drawer v-model="menuVisible" fixed width="80%">
-            <h1>Test</h1>
-
-            <router-link :to="{name: ROUTES.SETUP}">Setup</router-link>
-            <br>
-            <router-link :to="{name: ROUTES.DASHBOARD}">Dashboard</router-link>
-            <br>
-            <router-link :to="{name: ROUTES.LIQUIDS}">Liquids</router-link>
-            <br>
+        <v-navigation-drawer v-model="menuVisible" fixed width="300px">
+            <v-list>
+                <v-list-item :to="{name:ROUTES.DASHBOARD}">
+                    <v-list-item-icon>
+                        <v-icon>wine_bar</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-content>
+                        <v-list-item-title>
+                            Mischen
+                        </v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
+                <v-list-item :to="{name:ROUTES.SETUP}">
+                    <v-list-item-icon>
+                        <v-icon>settings_input_component</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-content>
+                        <v-list-item-title>
+                            Einstellungen
+                        </v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
+                <v-list-item :to="{name:ROUTES.LIQUIDS}">
+                    <v-list-item-icon>
+                        <v-icon>local_drink</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-content>
+                        <v-list-item-title>
+                            Getränke
+                        </v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
+            </v-list>
         </v-navigation-drawer>
 
         <v-main>
@@ -34,19 +58,23 @@
 </template>
 
 <script lang="ts">
-    import {ROUTES} from '@/router';
+    import {ROUTES} from '@/router/Routes';
     import {Component, Vue} from 'vue-property-decorator';
-    import {ArduinoService} from '@/services/ArduinoService';
+    import {getArduinoService} from '@/services/ArduinoService';
+    import {IArduinoService} from '@/services/types/ArduinoServiceTypes';
 
     @Component
     export default class App extends Vue {
         private readonly ROUTES = ROUTES;
 
         private menuVisible = false;
-        private arduinoConnected = ArduinoService.isConnected;
+        private arduinoConnected = false;
+        private arduinoService: IArduinoService | null = null;
 
-        mounted() {
-            ArduinoService.on('connectionChange', isConnected => {
+        async mounted() {
+            this.arduinoService = await getArduinoService();
+            this.arduinoConnected = this.arduinoService.isConnected;
+            this.arduinoService.on('connectionChange', isConnected => {
                 this.arduinoConnected = isConnected;
             });
         }

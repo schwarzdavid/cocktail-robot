@@ -2,15 +2,10 @@ import Vue from 'vue';
 import VueRouter, {RouteConfig} from 'vue-router';
 import Setup from '@/views/Setup.vue';
 import Liquids from '@/views/Liquids.vue';
+import {ROUTES} from '@/router/Routes';
 import Dashboard from '../views/Dashboard.vue';
 
 Vue.use(VueRouter);
-
-export enum ROUTES {
-    DASHBOARD = 'DASHBOARD',
-    SETUP = 'SETUP',
-    LIQUIDS = 'LIQUIDS'
-}
 
 const routes: Array<RouteConfig> = [
     {
@@ -31,7 +26,10 @@ const routes: Array<RouteConfig> = [
     {
         path: '*',
         redirect: {
-            name: ROUTES.SETUP
+            name: ROUTES.SETUP,
+            params: {
+                initial: 'true'
+            }
         }
     }
 ];

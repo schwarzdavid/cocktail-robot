@@ -49,6 +49,7 @@
         <div class="d-flex align-center justify-end mt-3" style="width:100%;">
             <v-btn color="primary" large>Anpumpen</v-btn>
             <v-btn color="primary" class="ml-5" large>Reinigen</v-btn>
+            <v-btn color="success" class="ml-5" large v-if="isInitial" :to="{name:ROUTES.DASHBOARD}">Weiter</v-btn>
         </div>
     </v-container>
 </template>
@@ -61,6 +62,7 @@
     import {SettingsModule} from '@/store/modules/SettingsModule';
     import SelectLiquid from '@/components/SelectLiquid.vue';
     import {LiquidHelper} from '@/store/helper/LiquidHelper';
+    import {ROUTES} from '@/router/Routes';
 
     @Component({
         components: {
@@ -68,8 +70,13 @@
         }
     })
     export default class Setup extends Vue {
+        private readonly ROUTES = ROUTES;
         private readonly liquidModule = getModule(LiquidModule, this.$store);
         private readonly settingsModule = getModule(SettingsModule, this.$store);
+
+        private get isInitial(): boolean {
+            return this.$route.params.initial === 'true';
+        }
 
         // eslint-disable-next-line class-methods-use-this
         private get installedAlcohols(): LiquidStorage<Liquid | null> {

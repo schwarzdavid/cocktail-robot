@@ -40,9 +40,6 @@
                         </div>
                     </div>
                     <div class="d-flex">
-                        <v-btn color="primary" icon large>
-                            <v-icon>save</v-icon>
-                        </v-btn>
                         <v-spacer/>
                         <v-btn color="error" text large>Reset</v-btn>
                         <v-btn color="primary" class="ml-3" large>Mischen</v-btn>
