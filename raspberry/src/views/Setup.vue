@@ -56,7 +56,7 @@
 
 <script lang="ts">
     import {Component, Vue} from 'vue-property-decorator';
-    import {Liquid, LiquidStorage, LiquidStoragePosition} from '@/store/types/LiquidTypes';
+    import {Liquid, LiquidStorage, LiquidStoragePosition} from '@/store/types/Liquid';
     import {getModule} from 'vuex-module-decorators';
     import {LiquidModule} from '@/store/modules/LiquidModule';
     import {SettingsModule} from '@/store/modules/SettingsModule';

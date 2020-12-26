@@ -10,4 +10,5 @@ export interface Liquid {
     name: string
 }
 
-export type LiquidStoragePosition = keyof LiquidStorage<number | null>;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type LiquidStoragePosition = keyof LiquidStorage<any>;

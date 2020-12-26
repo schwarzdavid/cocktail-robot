@@ -53,15 +53,14 @@
                                     <div v-for="i in Math.ceil(alphabet.length / charsInRow)" :key="i"
                                          class="d-flex justify-start mb-5 mx-n3">
                                         <div v-for="j in charsInRow" :key="j">
-                                            <template v-if="alphabet[(i-1)*charsInRow+j-1]">
-                                                <v-btn :outlined="charFilter !== alphabet[(i-1)*charsInRow+j-1]"
-                                                       :color="charFilter === alphabet[(i-1)*charsInRow+j-1] ? 'primary' : ''"
-                                                       style="width:48px;height:48px;min-width:unset;"
-                                                       class="pa-0 mx-3"
-                                                       @click="toggleCharFilter(alphabet[(i-1)*charsInRow+j-1])">
-                                                    {{ alphabet[(i - 1) * charsInRow + j - 1] }}
-                                                </v-btn>
-                                            </template>
+                                            <v-btn v-if="alphabet[(i-1)*charsInRow+j-1]"
+                                                   :outlined="isKeyOutlined(i, j)"
+                                                   :color="getKeyColor(i, j)"
+                                                   style="width:48px;height:48px;min-width:unset;"
+                                                   class="pa-0 mx-3"
+                                                   @click="toggleCharFilter(alphabet[(i-1)*charsInRow+j-1])">
+                                                {{ alphabet[(i - 1) * charsInRow + j - 1] }}
+                                            </v-btn>
                                         </div>
                                     </div>
                                 </div>
@@ -86,7 +85,7 @@
 
 <script lang="ts">
     import {Component, Emit, Prop, Vue} from 'vue-property-decorator';
-    import {Liquid} from '@/store/types/LiquidTypes';
+    import {Liquid} from '@/store/types/Liquid';
 
     @Component
     export default class SelectLiquid extends Vue {
@@ -115,6 +114,14 @@
             } else {
                 this.charFilter = char;
             }
+        }
+
+        private getKeyColor(rowIndex: number, colIndex: number): string {
+            return this.isKeyOutlined(rowIndex, colIndex) ? '' : 'primary';
+        }
+
+        private isKeyOutlined(rowIndex: number, colIndex: number): boolean {
+            return this.charFilter !== this.alphabet[(rowIndex - 1) * this.charsInRow + colIndex - 1];
         }
 
         @Emit('select')

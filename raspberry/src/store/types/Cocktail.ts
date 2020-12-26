@@ -1,7 +1,8 @@
-interface Ingredient {
+export interface Ingredient {
     type: string,
     amount: number,
-    position: number
+    position: number,
+    label: string
 }
 
 export interface JuiceIngredient extends Ingredient {

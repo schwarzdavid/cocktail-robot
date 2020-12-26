@@ -1,8 +1,8 @@
 import {TypedEmitter} from 'tiny-typed-emitter';
 import SerialPort, {OpenOptions} from 'serialport';
-import {ArduinoServiceEvents, IArduinoService} from '@/services/types/ArduinoServiceTypes';
+import {ArduinoServiceEvents, AbstractArduinoService} from '@/services/types/ArduinoServiceTypes';
 
-export class ArduinoServiceImpl extends TypedEmitter<ArduinoServiceEvents> implements IArduinoService {
+export class ArduinoServiceImpl extends TypedEmitter<ArduinoServiceEvents> implements AbstractArduinoService {
     private static readonly DEFAULT_PORT = '/dev/ttyAMA0';
 
     private readonly serialPort: SerialPort;

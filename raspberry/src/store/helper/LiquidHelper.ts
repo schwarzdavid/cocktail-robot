@@ -1,9 +1,10 @@
-import {RootState, store} from '@/store';
+import {store} from '@/store';
 import {Store} from 'vuex';
 import {LiquidModule} from '@/store/modules/LiquidModule';
 import {SettingsModule} from '@/store/modules/SettingsModule';
 import {getModule} from 'vuex-module-decorators';
-import {Liquid, LiquidStoragePosition} from '@/store/types/LiquidTypes';
+import {RootState} from '@/store/types/RootState';
+import {Liquid, LiquidStoragePosition} from '@/store/types/Liquid';
 
 class LiquidHelper {
     private readonly liquidModule: LiquidModule;
@@ -14,15 +15,15 @@ class LiquidHelper {
         this.settingsModule = getModule(SettingsModule, storeInstance);
     }
 
-    getAlcoholById(id: number | null): Liquid | null {
-        if (id === null) {
+    getAlcoholById(id: number | undefined): Liquid | null {
+        if (id === undefined) {
             return null;
         }
         return this.liquidModule.alcohols.find(alcohol => alcohol.id === id) || null;
     }
 
-    getJuiceById(id: number | null): Liquid | null {
-        if (id === null) {
+    getJuiceById(id: number | undefined): Liquid | null {
+        if (id === undefined) {
             return null;
         }
         return this.liquidModule.juices.find(juice => juice.id === id) || null;

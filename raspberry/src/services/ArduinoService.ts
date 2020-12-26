@@ -1,10 +1,10 @@
 import {MockArduinoService} from '@/services/mock/MockArduinoService';
 import {ArduinoServiceImpl} from '@/services/impl/ArduinoServiceImpl';
-import {IArduinoService} from '@/services/types/ArduinoServiceTypes';
+import {AbstractArduinoService} from '@/services/types/ArduinoServiceTypes';
 
-let arduinoService: IArduinoService;
+let arduinoService: AbstractArduinoService;
 
-export async function getArduinoService(): Promise<IArduinoService> {
+export async function getArduinoService(): Promise<AbstractArduinoService> {
     if (!arduinoService) {
         let ArduinoService: typeof MockArduinoService | typeof ArduinoServiceImpl;
         if (process.env.NODE_ENV === 'development') {

@@ -112,7 +112,7 @@
     import {Component, Vue} from 'vue-property-decorator';
     import {getModule} from 'vuex-module-decorators';
     import {LiquidModule} from '@/store/modules/LiquidModule';
-    import {Liquid} from '@/store/types/LiquidTypes';
+    import {Liquid} from '@/store/types/Liquid';
     import TextInput from '@/components/input/TextInput.vue';
     import ConfirmDelete from '@/components/ConfirmDelete.vue';
 

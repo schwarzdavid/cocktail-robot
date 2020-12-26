@@ -4,6 +4,6 @@ export interface ArduinoServiceEvents {
     connectionChange: (isConnected: boolean) => void
 }
 
-export interface IArduinoService extends TypedEmitter<ArduinoServiceEvents> {
+export interface AbstractArduinoService extends TypedEmitter<ArduinoServiceEvents> {
     isConnected: boolean
 }

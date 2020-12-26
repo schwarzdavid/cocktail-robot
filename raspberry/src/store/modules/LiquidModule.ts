@@ -1,5 +1,5 @@
 import {Module, Mutation, VuexModule} from 'vuex-module-decorators';
-import {Liquid} from '@/store/types/LiquidTypes';
+import {Liquid} from '@/store/types/Liquid';
 
 export interface LiquidModuleState {
     juices: Liquid[],

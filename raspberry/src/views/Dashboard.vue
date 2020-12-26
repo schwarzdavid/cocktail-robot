@@ -14,14 +14,14 @@
                 <h2 class="text-h5 mt-5">Mischgetränke</h2>
                 <v-row>
                     <v-col cols="6" v-for="(juice, index) in juices" :key="index">
-                        <juice-edit>
+                        <add-juice>
                             <template v-slot:default="{on, attrs}">
                                 <v-btn large block color="dark" depressed class="white" v-bind="attrs" v-on="on"
                                        :disabled="!juice">
                                     {{ juice ? juice.name : 'Leer' }}
                                 </v-btn>
                             </template>
-                        </juice-edit>
+                        </add-juice>
                     </v-col>
                 </v-row>
             </v-col>
@@ -33,15 +33,20 @@
                              style="height:100%;">
                             <p class="text-uppercase">Keine Getränke ausgewählt</p>
                         </div>
-                        <div v-else v-sortable>
+                        <div v-else>
                             <div v-for="(ingredient, index) in cocktail.ingredients" :key="index">
-                                {{ ingredient.type }} - {{ ingredient.position }} - {{ ingredient.amount }}
+                                <template v-if="ingredient.type === 'alc'">
+                                    {{ ingredient.type }} - {{ ingredient.position }} - {{ ingredient.amount }}
+                                </template>
+                                <template v-else>
+
+                                </template>
                             </div>
                         </div>
                     </div>
                     <div class="d-flex">
                         <v-spacer/>
-                        <v-btn color="error" text large>Reset</v-btn>
+                        <v-btn color="error" text large @click="resetCocktail">Reset</v-btn>
                         <v-btn color="primary" class="ml-3" large>Mischen</v-btn>
                     </div>
                 </div>
@@ -52,17 +57,17 @@
 
 <script lang="ts">
     import {Component, Vue} from 'vue-property-decorator';
-    import JuiceEdit from '@/components/JuiceEdit.vue';
+    import AddJuice from '@/components/AddJuice.vue';
     import {SettingsModule} from '@/store/modules/SettingsModule';
     import {getModule} from 'vuex-module-decorators';
     import {Cocktail} from '@/store/types/Cocktail';
-    import {Liquid, LiquidStorage, LiquidStoragePosition} from '@/store/types/LiquidTypes';
+    import {Liquid, LiquidStorage, LiquidStoragePosition} from '@/store/types/Liquid';
     import {LiquidHelper} from '@/store/helper/LiquidHelper';
     import {CocktailModule} from '@/store/modules/CocktailModule';
 
     @Component({
         components: {
-            JuiceEdit
+            AddJuice
         }
     })
     export default class Dashboard extends Vue {
@@ -91,8 +96,12 @@
             return output;
         }
 
-        private addAlcohol(position: number) {
+        private addAlcohol(position: LiquidStoragePosition) {
             this.cocktailModule.addAlcohol(position);
+        }
+
+        private resetCocktail() {
+            this.cocktailModule.reset();
         }
     }
 </script>

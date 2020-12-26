@@ -61,7 +61,7 @@
     import {ROUTES} from '@/router/Routes';
     import {Component, Vue} from 'vue-property-decorator';
     import {getArduinoService} from '@/services/ArduinoService';
-    import {IArduinoService} from '@/services/types/ArduinoServiceTypes';
+    import {AbstractArduinoService} from '@/services/types/ArduinoServiceTypes';
 
     @Component
     export default class App extends Vue {
@@ -69,7 +69,7 @@
 
         private menuVisible = false;
         private arduinoConnected = false;
-        private arduinoService: IArduinoService | null = null;
+        private arduinoService: AbstractArduinoService | null = null;
 
         async mounted() {
             this.arduinoService = await getArduinoService();
