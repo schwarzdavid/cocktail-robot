@@ -55,7 +55,10 @@ export class CocktailModule extends VuexModule<any, RootState> implements Cockta
         mutate: ['ingredients']
     })
     // eslint-disable-next-line max-len
-    async addJuice(this: ActionContext<Cocktail, RootState>, position: LiquidStoragePosition, amount: number): Promise<IngredientActionMutationValue> {
+    async addJuice(this: ActionContext<Cocktail, RootState>, {
+        position,
+        amount
+    }: { position: LiquidStoragePosition, amount: number }): Promise<IngredientActionMutationValue> {
         const {ingredients} = this.state;
         const lastIngredient = ingredients[ingredients.length - 1];
         if (lastIngredient && lastIngredient.type === 'soft' && lastIngredient.position === position) {

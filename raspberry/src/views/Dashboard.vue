@@ -14,7 +14,7 @@
                 <h2 class="text-h5 mt-5">Mischgetränke</h2>
                 <v-row>
                     <v-col cols="6" v-for="(juice, index) in juices" :key="index">
-                        <add-juice>
+                        <add-juice :label="juice.name" :max="amountLeft" @save="amount => addJuice(index, amount)">
                             <template v-slot:default="{on, attrs}">
                                 <v-btn large block color="dark" depressed class="white" v-bind="attrs" v-on="on"
                                        :disabled="!juice">
@@ -28,29 +28,67 @@
             <v-col cols="6" align-self="stretch">
                 <div class="elevation-3 white">
                     <v-progress-linear height="5" :value="amountValue" :color="amountColor"></v-progress-linear>
-                    <div class="px-5 py-5 d-flex flex-column"  style="height:100%">
-                        <div class="d-flex align-center justify-space-between">
+                    <div class="py-5 d-flex flex-column" style="height:100%">
+                        <div class="d-flex align-center justify-space-between px-5">
                             <h2 class="text-h4">Cocktail</h2>
                             <span class="text-subtitle-1 text--disabled">{{ amountText }}</span>
                         </div>
-                        <div class="my-3" style="height:313px;overflow-y: scroll">
+                        <div class="my-3 px-3" style="height:313px;overflow-y: scroll">
                             <div v-if="!cocktail.ingredients.length" class="d-flex align-center justify-center"
                                  style="height:100%;">
                                 <p class="text-uppercase">Keine Getränke ausgewählt</p>
                             </div>
-                            <div v-else>
-                                <div v-for="(ingredient, index) in cocktail.ingredients" :key="index">
-                                    <template v-if="ingredient.type === 'alc'">
-
-                                        {{ ingredient.type }} - {{ ingredient.position }} - {{ ingredient.amount }}
-                                    </template>
-                                    <template v-else>
-
-                                    </template>
-                                </div>
-                            </div>
+                            <v-list v-else>
+                                <template v-for="(ingredient, index) in cocktail.ingredients">
+                                    <v-list-item :key="index">
+                                        <template v-if="ingredient.type === 'alc'">
+                                            <v-list-item-icon>
+                                                <v-icon>local_bar</v-icon>
+                                            </v-list-item-icon>
+                                            <v-list-item-content>
+                                                <v-list-item-title>{{ ingredient.label }}</v-list-item-title>
+                                                <v-list-item-subtitle>
+                                                    {{ ingredient.amount }}x {{ shotSizeInCl }}cl
+                                                </v-list-item-subtitle>
+                                            </v-list-item-content>
+                                            <v-list-item-action class="d-flex flex-row">
+                                                <v-btn icon class="mr-3">
+                                                    <v-icon>add</v-icon>
+                                                </v-btn>
+                                                <v-btn icon class="mr-3" :disabled="ingredient.amount === 1">
+                                                    <v-icon>remove</v-icon>
+                                                </v-btn>
+                                                <v-btn icon color="error">
+                                                    <v-icon>delete</v-icon>
+                                                </v-btn>
+                                            </v-list-item-action>
+                                        </template>
+                                        <template v-else>
+                                            <v-list-item-icon>
+                                                <v-icon>science</v-icon>
+                                            </v-list-item-icon>
+                                            <v-list-item-content>
+                                                <v-list-item-title>{{ ingredient.label }}</v-list-item-title>
+                                                <v-list-item-subtitle>
+                                                    {{ ingredient.amount }}ml
+                                                </v-list-item-subtitle>
+                                            </v-list-item-content>
+                                            <v-list-item-action class="d-flex flex-row">
+                                                <v-btn icon class="mr-3">
+                                                    <v-icon>edit</v-icon>
+                                                </v-btn>
+                                                <v-btn icon color="error">
+                                                    <v-icon>delete</v-icon>
+                                                </v-btn>
+                                            </v-list-item-action>
+                                        </template>
+                                    </v-list-item>
+                                    <v-divider :key="index + '_divider'"
+                                               v-if="index < cocktail.ingredients.length - 1"></v-divider>
+                                </template>
+                            </v-list>
                         </div>
-                        <div class="d-flex">
+                        <div class="d-flex px-5">
                             <v-spacer/>
                             <v-btn color="error" text large @click="resetCocktail">Reset</v-btn>
                             <v-btn color="primary" class="ml-3" large>Mischen</v-btn>
@@ -102,6 +140,15 @@
             return this.colorService.getColorByMappedValue(this.cocktailModule.amount, this.settingsModule.cupSize);
         }
 
+        private get amountLeft(): number {
+            return this.settingsModule.cupSize - this.cocktailModule.amount;
+        }
+
+        // eslint-disable-next-line class-methods-use-this
+        private get shotSizeInCl(): number {
+            return CocktailModule.ALC_DOSE_SIZE / 10;
+        }
+
         // eslint-disable-next-line class-methods-use-this
         private get juices(): LiquidStorage<Liquid | null> {
             const output: LiquidStorage<Liquid | null> = [null, null, null, null];
@@ -129,7 +176,10 @@
         private addJuice(position: LiquidStoragePosition, amount: number) {
             // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
             // @ts-ignore
-            this.cocktailModule.addJuice(position, amount);
+            this.cocktailModule.addJuice({
+                position,
+                amount
+            });
         }
 
         private resetCocktail() {
