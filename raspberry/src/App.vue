@@ -87,7 +87,7 @@
 
 <style lang="scss">
     html, body {
-        overflow: hidden;
+        overflow: hidden !important;
     }
 
     *, *:before, *:after {

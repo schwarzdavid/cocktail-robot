@@ -1,5 +1,5 @@
 <template>
-    <v-container fluid fill-height style="align-items: stretch">
+    <v-container fluid fill-height style="align-items: stretch" class="mb-5">
         <v-row align="center">
             <v-col cols="6">
                 <h2 class="text-h5">Spirituosen</h2>
@@ -26,14 +26,14 @@
                 </v-row>
             </v-col>
             <v-col cols="6" align-self="stretch">
-                <div class="elevation-3 white" style="height:100%">
+                <div class="elevation-3 white">
                     <v-progress-linear height="5" :value="amountValue" :color="amountColor"></v-progress-linear>
-                    <div class="px-5 py-5 d-flex flex-column">
+                    <div class="px-5 py-5 d-flex flex-column"  style="height:100%">
                         <div class="d-flex align-center justify-space-between">
                             <h2 class="text-h4">Cocktail</h2>
                             <span class="text-subtitle-1 text--disabled">{{ amountText }}</span>
                         </div>
-                        <div class="flex-grow-1 mt-3">
+                        <div class="my-3" style="height:313px;overflow-y: scroll">
                             <div v-if="!cocktail.ingredients.length" class="d-flex align-center justify-center"
                                  style="height:100%;">
                                 <p class="text-uppercase">Keine Getränke ausgewählt</p>
@@ -81,7 +81,10 @@
     export default class Dashboard extends Vue {
         private readonly settingsModule: SettingsModule = getModule(SettingsModule, this.$store);
         private readonly cocktailModule: CocktailModule = getModule(CocktailModule, this.$store);
-        private readonly colorService = new ColorService('#62DB27', '#FA260F');
+        private readonly colorService = new ColorService(
+            this.$vuetify?.theme?.currentTheme?.success?.toString() || '#3ddd0b',
+            this.$vuetify?.theme?.currentTheme?.error?.toString() || '#c60303'
+        );
 
         private get cocktail(): Cocktail {
             return this.cocktailModule;
@@ -96,8 +99,6 @@
         }
 
         private get amountColor(): string {
-            const color = this.colorService.getColorByMappedValue(this.cocktailModule.amount, this.settingsModule.cupSize);
-            console.log(color);
             return this.colorService.getColorByMappedValue(this.cocktailModule.amount, this.settingsModule.cupSize);
         }
 
