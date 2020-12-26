@@ -4,13 +4,16 @@ import {LiquidStorage, LiquidStoragePosition} from '@/store/types/Liquid';
 
 export interface SettingsModuleState {
     installedAlcohols: LiquidStorage<number | undefined>,
-    installedJuices: LiquidStorage<number | undefined>
+    installedJuices: LiquidStorage<number | undefined>,
+    readonly cupSize: number
 }
 
 @Module({
     name: 'settings'
 })
 export class SettingsModule extends VuexModule implements SettingsModuleState {
+    readonly cupSize = 250;
+
     installedAlcohols: LiquidStorage<number | undefined> = [undefined, undefined, undefined, undefined];
 
     installedJuices: LiquidStorage<number | undefined> = [undefined, undefined, undefined, undefined];

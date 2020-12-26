@@ -26,28 +26,35 @@
                 </v-row>
             </v-col>
             <v-col cols="6" align-self="stretch">
-                <div class="elevation-3 white px-5 py-5 d-flex flex-column" style="height:100%">
-                    <h2 class="text-h4">Cocktail</h2>
-                    <div class="flex-grow-1 mt-3">
-                        <div v-if="!cocktail.ingredients.length" class="d-flex align-center justify-center"
-                             style="height:100%;">
-                            <p class="text-uppercase">Keine Getränke ausgewählt</p>
+                <div class="elevation-3 white" style="height:100%">
+                    <v-progress-linear height="5" :value="amountValue" :color="amountColor"></v-progress-linear>
+                    <div class="px-5 py-5 d-flex flex-column">
+                        <div class="d-flex align-center justify-space-between">
+                            <h2 class="text-h4">Cocktail</h2>
+                            <span class="text-subtitle-1 text--disabled">{{ amountText }}</span>
                         </div>
-                        <div v-else>
-                            <div v-for="(ingredient, index) in cocktail.ingredients" :key="index">
-                                <template v-if="ingredient.type === 'alc'">
-                                    {{ ingredient.type }} - {{ ingredient.position }} - {{ ingredient.amount }}
-                                </template>
-                                <template v-else>
+                        <div class="flex-grow-1 mt-3">
+                            <div v-if="!cocktail.ingredients.length" class="d-flex align-center justify-center"
+                                 style="height:100%;">
+                                <p class="text-uppercase">Keine Getränke ausgewählt</p>
+                            </div>
+                            <div v-else>
+                                <div v-for="(ingredient, index) in cocktail.ingredients" :key="index">
+                                    <template v-if="ingredient.type === 'alc'">
 
-                                </template>
+                                        {{ ingredient.type }} - {{ ingredient.position }} - {{ ingredient.amount }}
+                                    </template>
+                                    <template v-else>
+
+                                    </template>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="d-flex">
-                        <v-spacer/>
-                        <v-btn color="error" text large @click="resetCocktail">Reset</v-btn>
-                        <v-btn color="primary" class="ml-3" large>Mischen</v-btn>
+                        <div class="d-flex">
+                            <v-spacer/>
+                            <v-btn color="error" text large @click="resetCocktail">Reset</v-btn>
+                            <v-btn color="primary" class="ml-3" large>Mischen</v-btn>
+                        </div>
                     </div>
                 </div>
             </v-col>
@@ -64,6 +71,7 @@
     import {Liquid, LiquidStorage, LiquidStoragePosition} from '@/store/types/Liquid';
     import {LiquidHelper} from '@/store/helper/LiquidHelper';
     import {CocktailModule} from '@/store/modules/CocktailModule';
+    import {ColorService} from '@/services/ColorService';
 
     @Component({
         components: {
@@ -73,9 +81,24 @@
     export default class Dashboard extends Vue {
         private readonly settingsModule: SettingsModule = getModule(SettingsModule, this.$store);
         private readonly cocktailModule: CocktailModule = getModule(CocktailModule, this.$store);
+        private readonly colorService = new ColorService('#62DB27', '#FA260F');
 
         private get cocktail(): Cocktail {
             return this.cocktailModule;
+        }
+
+        private get amountText(): string {
+            return `${this.cocktailModule.amount}/${this.settingsModule.cupSize}ml`;
+        }
+
+        private get amountValue(): number {
+            return (this.cocktailModule.amount / this.settingsModule.cupSize) * 100;
+        }
+
+        private get amountColor(): string {
+            const color = this.colorService.getColorByMappedValue(this.cocktailModule.amount, this.settingsModule.cupSize);
+            console.log(color);
+            return this.colorService.getColorByMappedValue(this.cocktailModule.amount, this.settingsModule.cupSize);
         }
 
         // eslint-disable-next-line class-methods-use-this
@@ -97,7 +120,15 @@
         }
 
         private addAlcohol(position: LiquidStoragePosition) {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+            // @ts-ignore
             this.cocktailModule.addAlcohol(position);
+        }
+
+        private addJuice(position: LiquidStoragePosition, amount: number) {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+            // @ts-ignore
+            this.cocktailModule.addJuice(position, amount);
         }
 
         private resetCocktail() {

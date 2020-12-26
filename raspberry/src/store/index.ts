@@ -5,8 +5,10 @@ import {createPersistedState} from 'vuex-electron';
 import {LiquidModule} from '@/store/modules/LiquidModule';
 import {CocktailModule} from '@/store/modules/CocktailModule';
 import {RootState} from '@/store/types/RootState';
+import {config} from 'vuex-module-decorators';
 
 Vue.use(Vuex);
+config.rawError = true;
 
 export const store = new Vuex.Store<RootState>({
     modules: {
