@@ -6,6 +6,7 @@ import {LiquidModule} from '@/store/modules/LiquidModule';
 import {CocktailModule} from '@/store/modules/CocktailModule';
 import {RootState} from '@/store/types/RootState';
 import {config} from 'vuex-module-decorators';
+import {LogModule} from '@/store/modules/LogModule';
 
 Vue.use(Vuex);
 config.rawError = true;
@@ -14,7 +15,8 @@ export const store = new Vuex.Store<RootState>({
     modules: {
         settings: SettingsModule,
         liquid: LiquidModule,
-        cocktail: CocktailModule
+        cocktail: CocktailModule,
+        log: LogModule
     },
     plugins: [createPersistedState()]
 });

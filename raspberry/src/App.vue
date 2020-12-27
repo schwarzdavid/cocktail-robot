@@ -49,6 +49,21 @@
                     </v-list-item-content>
                 </v-list-item>
             </v-list>
+
+            <template v-slot:append>
+                <v-list>
+                    <v-list-item :to="{name:ROUTES.LOG}">
+                        <v-list-item-icon>
+                            <v-icon>history</v-icon>
+                        </v-list-item-icon>
+                        <v-list-item-content>
+                            <v-list-item-title>
+                                Logs
+                            </v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+                </v-list>
+            </template>
         </v-navigation-drawer>
 
         <v-main>
@@ -76,6 +91,7 @@
             this.arduinoConnected = this.arduinoService.isConnected;
             this.arduinoService.on('connectionChange', isConnected => {
                 this.arduinoConnected = isConnected;
+                this.$forceUpdate();
             });
         }
 
@@ -119,6 +135,7 @@
     ::-webkit-scrollbar {
         width: 4px;
         overflow: visible;
+        height: 4px;
     }
 
     ::-webkit-scrollbar-track {

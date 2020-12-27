@@ -2,6 +2,7 @@ import Vue from 'vue';
 import VueRouter, {RouteConfig} from 'vue-router';
 import Setup from '@/views/Setup.vue';
 import Liquids from '@/views/Liquids.vue';
+import Log from '@/views/Log.vue';
 import {ROUTES} from '@/router/Routes';
 import Dashboard from '../views/Dashboard.vue';
 
@@ -22,6 +23,11 @@ const routes: Array<RouteConfig> = [
         path: '/liquids',
         name: ROUTES.LIQUIDS,
         component: Liquids
+    },
+    {
+        path: '/log',
+        name: ROUTES.LOG,
+        component: Log
     },
     {
         path: '*',

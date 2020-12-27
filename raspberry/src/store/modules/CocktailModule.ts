@@ -3,6 +3,7 @@ import {AlcoholIngredient, Cocktail, JuiceIngredient} from '@/store/types/Cockta
 import {LiquidStoragePosition} from '@/store/types/Liquid';
 import {RootState} from '@/store/types/RootState';
 import {ActionContext} from 'vuex';
+import Vue from 'vue';
 
 type IngredientActionMutationValue = { ingredients: Array<JuiceIngredient | AlcoholIngredient> };
 
@@ -12,6 +13,7 @@ type IngredientActionMutationValue = { ingredients: Array<JuiceIngredient | Alco
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export class CocktailModule extends VuexModule<any, RootState> implements Cocktail {
     static readonly ALC_DOSE_SIZE = 20;
+    static readonly JUICE_MIN_SIZE = 10;
 
     ingredients: Array<JuiceIngredient | AlcoholIngredient> = [];
 
@@ -86,5 +88,23 @@ export class CocktailModule extends VuexModule<any, RootState> implements Cockta
     @Mutation
     reset() {
         this.ingredients = [];
+    }
+
+    @Mutation
+    setAmount({index, amount}: { index: number, amount: number }) {
+        const ingredient = this.ingredients[index];
+        if (!ingredient) {
+            return;
+        }
+        ingredient.amount = amount;
+        Vue.set(this.ingredients, index, ingredient);
+    }
+
+    @Mutation
+    deleteIngredient(index: number) {
+        if (!this.ingredients[index]) {
+            return;
+        }
+        this.ingredients.splice(index, 1);
     }
 }

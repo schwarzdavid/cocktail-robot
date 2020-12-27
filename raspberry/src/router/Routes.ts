@@ -1,5 +1,6 @@
 export enum ROUTES {
     DASHBOARD = 'DASHBOARD',
     SETUP = 'SETUP',
-    LIQUIDS = 'LIQUIDS'
+    LIQUIDS = 'LIQUIDS',
+    LOG = 'LOG'
 }

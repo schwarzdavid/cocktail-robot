@@ -5,8 +5,8 @@
                 <h2 class="text-h5">Spirituosen</h2>
                 <v-row>
                     <v-col cols="6" v-for="(alcohol, index) in alcohols" :key="index">
-                        <v-btn large block color="dark" depressed class="white" :disabled="!alcohol"
-                               @click="addAlcohol(index)">
+                        <v-btn large block color="dark" depressed class="white"
+                               :disabled="!alcohol || !addingAlcoholAllowed" @click="addAlcohol(index)">
                             {{ alcohol ? alcohol.name : 'Leer' }}
                         </v-btn>
                     </v-col>
@@ -17,7 +17,7 @@
                         <add-juice :label="juice.name" :max="amountLeft" @save="amount => addJuice(index, amount)">
                             <template v-slot:default="{on, attrs}">
                                 <v-btn large block color="dark" depressed class="white" v-bind="attrs" v-on="on"
-                                       :disabled="!juice">
+                                       :disabled="!juice || !addingJuiceAllowed">
                                     {{ juice ? juice.name : 'Leer' }}
                                 </v-btn>
                             </template>
@@ -52,15 +52,20 @@
                                                 </v-list-item-subtitle>
                                             </v-list-item-content>
                                             <v-list-item-action class="d-flex flex-row">
-                                                <v-btn icon class="mr-3">
+                                                <v-btn icon class="mr-3" :disabled="!addingAlcoholAllowed"
+                                                       @click="setAmount(index, ingredient.amount + 1)">
                                                     <v-icon>add</v-icon>
                                                 </v-btn>
-                                                <v-btn icon class="mr-3" :disabled="ingredient.amount === 1">
+                                                <v-btn icon class="mr-3" :disabled="ingredient.amount === 1"
+                                                       @click="setAmount(index, ingredient.amount - 1)">
                                                     <v-icon>remove</v-icon>
                                                 </v-btn>
-                                                <v-btn icon color="error">
-                                                    <v-icon>delete</v-icon>
-                                                </v-btn>
+                                                <confirm-delete v-slot="{on, attrs}" :label="ingredient.label"
+                                                                @delete="deleteIngredient(index)">
+                                                    <v-btn icon color="error" v-on="on" v-bind="attrs">
+                                                        <v-icon>delete</v-icon>
+                                                    </v-btn>
+                                                </confirm-delete>
                                             </v-list-item-action>
                                         </template>
                                         <template v-else>
@@ -74,12 +79,20 @@
                                                 </v-list-item-subtitle>
                                             </v-list-item-content>
                                             <v-list-item-action class="d-flex flex-row">
-                                                <v-btn icon class="mr-3">
-                                                    <v-icon>edit</v-icon>
-                                                </v-btn>
-                                                <v-btn icon color="error">
-                                                    <v-icon>delete</v-icon>
-                                                </v-btn>
+                                                <add-juice v-slot="{on, attrs}" :min="juiceMin"
+                                                           :max="amountLeft + ingredient.amount"
+                                                           :value="ingredient.amount" :label="ingredient.label"
+                                                           @save="amount => setAmount(index, amount)">
+                                                    <v-btn icon class="mr-3" v-on="on" v-bind="attrs">
+                                                        <v-icon>edit</v-icon>
+                                                    </v-btn>
+                                                </add-juice>
+                                                <confirm-delete v-slot="{on, attrs}" :label="ingredient.label"
+                                                                @delete="deleteIngredient(index)">
+                                                    <v-btn icon color="error" v-on="on" v-bind="attrs">
+                                                        <v-icon>delete</v-icon>
+                                                    </v-btn>
+                                                </confirm-delete>
                                             </v-list-item-action>
                                         </template>
                                     </v-list-item>
@@ -90,13 +103,34 @@
                         </div>
                         <div class="d-flex px-5">
                             <v-spacer/>
-                            <v-btn color="error" text large @click="resetCocktail">Reset</v-btn>
-                            <v-btn color="primary" class="ml-3" large>Mischen</v-btn>
+                            <v-btn color="error" text large @click="resetCocktail"
+                                   :disabled="!cocktailModule.ingredients.length">Reset
+                            </v-btn>
+                            <confirm-cocktail v-slot="{on,attrs}" @confirm="mixCocktail">
+                                <v-btn color="primary" class="ml-3" large v-on="on" v-bind="attrs"
+                                       :disabled="!cocktailModule.ingredients.length || !isArduinoConnected">Mischen
+                                </v-btn>
+                            </confirm-cocktail>
                         </div>
                     </div>
                 </div>
             </v-col>
         </v-row>
+        <v-overlay :value="isCocktailMixing">
+            <v-progress-circular indeterminate size="128" width="10" color="white"></v-progress-circular>
+        </v-overlay>
+        <v-snackbar v-model="showCocktailSuccessMessage">
+            <span>Ihr Cocktail ist fertig</span>
+            <template v-slot:action="{attrs}">
+                <v-btn color="white" text v-bind="attrs" @click="showCocktailSuccessMessage = false">Schließen</v-btn>
+            </template>
+        </v-snackbar>
+        <v-snackbar v-model="showCocktailErrorMessage">
+            <span>Es gab einen Fehler beim Mischen Ihres Cocktails</span>
+            <template v-slot:action="{attrs}">
+                <v-btn color="white" text v-bind="attrs" @click="showCocktailErrorMessage = false">Schließen</v-btn>
+            </template>
+        </v-snackbar>
     </v-container>
 </template>
 
@@ -110,9 +144,15 @@
     import {LiquidHelper} from '@/store/helper/LiquidHelper';
     import {CocktailModule} from '@/store/modules/CocktailModule';
     import {ColorService} from '@/services/ColorService';
+    import ConfirmDelete from '@/components/ConfirmDelete.vue';
+    import ConfirmCocktail from '@/components/ConfirmCocktail.vue';
+    import {getArduinoService} from '@/services/ArduinoService';
+    import {AbstractArduinoService} from '@/services/types/ArduinoServiceTypes';
 
     @Component({
         components: {
+            ConfirmCocktail,
+            ConfirmDelete,
             AddJuice
         }
     })
@@ -123,6 +163,21 @@
             this.$vuetify?.theme?.currentTheme?.success?.toString() || '#3ddd0b',
             this.$vuetify?.theme?.currentTheme?.error?.toString() || '#c60303'
         );
+
+        private arduinoService?: AbstractArduinoService;
+        private isCocktailMixing = false;
+        private isArduinoConnected = false;
+        private showCocktailSuccessMessage = false;
+        private showCocktailErrorMessage = false;
+
+        async mounted() {
+            this.arduinoService = await getArduinoService();
+            this.isArduinoConnected = this.arduinoService.isConnected;
+            this.arduinoService.on('connectionChange', isConnected => {
+                this.isArduinoConnected = isConnected;
+                this.$forceUpdate();
+            });
+        }
 
         private get cocktail(): Cocktail {
             return this.cocktailModule;
@@ -142,6 +197,19 @@
 
         private get amountLeft(): number {
             return this.settingsModule.cupSize - this.cocktailModule.amount;
+        }
+
+        // eslint-disable-next-line class-methods-use-this
+        private get juiceMin(): number {
+            return CocktailModule.JUICE_MIN_SIZE;
+        }
+
+        private get addingJuiceAllowed(): boolean {
+            return this.cocktailModule.amount + CocktailModule.JUICE_MIN_SIZE <= this.settingsModule.cupSize;
+        }
+
+        private get addingAlcoholAllowed(): boolean {
+            return this.cocktailModule.amount + CocktailModule.ALC_DOSE_SIZE <= this.settingsModule.cupSize;
         }
 
         // eslint-disable-next-line class-methods-use-this
@@ -184,6 +252,31 @@
 
         private resetCocktail() {
             this.cocktailModule.reset();
+        }
+
+        private setAmount(index: number, amount: number) {
+            this.cocktailModule.setAmount({
+                index,
+                amount
+            });
+        }
+
+        private deleteIngredient(index: number) {
+            this.cocktailModule.deleteIngredient(index);
+        }
+
+        private async mixCocktail() {
+            this.isCocktailMixing = true;
+            const arduinoService = await getArduinoService();
+            try {
+                await arduinoService.orderCocktail(this.cocktailModule.ingredients);
+                this.showCocktailSuccessMessage = true;
+            } catch (err) {
+                this.showCocktailErrorMessage = true;
+            } finally {
+                this.cocktailModule.reset();
+                this.isCocktailMixing = false;
+            }
         }
     }
 </script>
