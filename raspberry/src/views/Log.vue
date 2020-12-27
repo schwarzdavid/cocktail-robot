@@ -17,6 +17,8 @@
             <div class="d-flex align-center px-4 py-2">
                 <span class="text-h6">Logs</span>
                 <v-spacer></v-spacer>
+                <v-btn text color="warning" @click="triggerError">Test Error</v-btn>
+                <v-btn text color="warning" @click="triggerException">Test Exception</v-btn>
                 <v-btn @click="deleteAllLogs" depressed color="error">Alle löschen</v-btn>
             </div>
         </template>
@@ -63,6 +65,16 @@
 
         private deleteAllLogs() {
             this.logModule.deleteAll();
+        }
+
+        // eslint-disable-next-line class-methods-use-this
+        private triggerError() {
+            throw new Error('Im done with this shit');
+        }
+
+        // eslint-disable-next-line class-methods-use-this
+        private triggerException() {
+            Promise.reject(new Error('Promise handling herst'));
         }
     }
 </script>
