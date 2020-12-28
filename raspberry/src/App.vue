@@ -75,46 +75,20 @@
 <script lang="ts">
     import {ROUTES} from '@/router/Routes';
     import {Component, Vue} from 'vue-property-decorator';
-    import {getArduinoService} from '@/services/ArduinoService';
-    import {AbstractArduinoService} from '@/services/types/ArduinoServiceTypes';
-    import {getModule} from 'vuex-module-decorators';
-    import {LogModule} from '@/store/modules/LogModule';
+    import {ArduinoService} from '@/services/ArduinoService';
 
     @Component
     export default class App extends Vue {
         private readonly ROUTES = ROUTES;
-        private readonly logModule = getModule(LogModule, this.$store);
 
         private menuVisible = false;
-        private arduinoConnected = false;
-        private arduinoService: AbstractArduinoService | null = null;
+        private arduinoConnected = ArduinoService.isConnected;
 
         async mounted() {
-            this.arduinoService = await getArduinoService();
-            this.arduinoConnected = this.arduinoService.isConnected;
-            this.arduinoService.on('connectionChange', isConnected => {
+            ArduinoService.on('connectionChange', isConnected => {
                 this.arduinoConnected = isConnected;
                 this.$forceUpdate();
             });
-
-            window.addEventListener('error', event => {
-                event.preventDefault();
-                event.stopPropagation();
-                this.logModule.addMessage(event.error);
-                console.error(event.error);
-            });
-
-            window.addEventListener('unhandledrejection', event => {
-                event.preventDefault();
-                event.stopPropagation();
-                this.logModule.addMessage(event.reason);
-                console.error(event.reason);
-            });
-
-            Vue.config.errorHandler = (err, vm, info) => {
-                console.error(err, vm, info);
-                this.logModule.addMessage(err);
-            };
         }
 
         private get connectionColor(): string {

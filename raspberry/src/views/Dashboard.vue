@@ -146,8 +146,7 @@
     import {ColorService} from '@/services/ColorService';
     import ConfirmDelete from '@/components/ConfirmDelete.vue';
     import ConfirmCocktail from '@/components/ConfirmCocktail.vue';
-    import {getArduinoService} from '@/services/ArduinoService';
-    import {AbstractArduinoService} from '@/services/types/ArduinoServiceTypes';
+    import {ArduinoService} from '@/services/ArduinoService';
 
     @Component({
         components: {
@@ -164,16 +163,13 @@
             this.$vuetify?.theme?.currentTheme?.error?.toString() || '#c60303'
         );
 
-        private arduinoService?: AbstractArduinoService;
         private isCocktailMixing = false;
-        private isArduinoConnected = false;
+        private isArduinoConnected = ArduinoService.isConnected;
         private showCocktailSuccessMessage = false;
         private showCocktailErrorMessage = false;
 
         async mounted() {
-            this.arduinoService = await getArduinoService();
-            this.isArduinoConnected = this.arduinoService.isConnected;
-            this.arduinoService.on('connectionChange', isConnected => {
+            ArduinoService.on('connectionChange', isConnected => {
                 this.isArduinoConnected = isConnected;
                 this.$forceUpdate();
             });
@@ -267,9 +263,8 @@
 
         private async mixCocktail() {
             this.isCocktailMixing = true;
-            const arduinoService = await getArduinoService();
             try {
-                await arduinoService.orderCocktail(this.cocktailModule.ingredients);
+                await ArduinoService.orderCocktail(this.cocktailModule.ingredients);
                 this.showCocktailSuccessMessage = true;
             } catch (err) {
                 this.showCocktailErrorMessage = true;
