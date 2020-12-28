@@ -81,6 +81,8 @@ class ArduinoService extends TypedEmitter<ArduinoServiceEvents> {
 
     private static installMockBindingsOnDevelopmentEnvironment(): void {
         if (process.env.NODE_ENV === 'development') {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+            // @ts-ignore
             MockBinding.createPort('/dev/ttyAMA0');
             SerialPort.Binding = MockBinding;
         }
