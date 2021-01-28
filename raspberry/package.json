@@ -21,7 +21,7 @@
     "@serialport/parser-readline": "^9.0.1",
     "@serialport/stream": "^9.0.2",
     "auto-launch": "^5.0.5",
-    "electron": "^9.0.0",
+    "electron": "^9.4.0",
     "electron-devtools-installer": "^3.1.0",
     "lodash": "^4.17.20",
     "material-design-icons-iconfont": "^6.1.0",
