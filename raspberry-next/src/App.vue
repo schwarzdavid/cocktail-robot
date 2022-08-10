@@ -1,23 +1,11 @@
 <template>
     <v-app>
-        <v-main>
-            <router-view/>
-        </v-main>
+        <router-view v-slot="{Component}">
+            <transition mode="out-in" name="fade-transition">
+                <component :is="Component"/>
+            </transition>
+        </router-view>
     </v-app>
 </template>
-
-<script lang="ts">
-    import {defineComponent} from 'vue';
-
-    export default defineComponent({
-        name: 'App',
-
-        data() {
-            return {
-                //
-            };
-        }
-    });
-</script>
 
 <style src="@/assets/scss/main.scss" lang="scss"></style>
