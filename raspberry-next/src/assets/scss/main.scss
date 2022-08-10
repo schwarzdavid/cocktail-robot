@@ -1,0 +1,9 @@
+@import "inject";
+
+:root {
+    --v-scrollbar-offset: 0 !important;
+}
+
+html {
+    overflow-y: hidden !important;
+}

@@ -1,0 +1,13 @@
+<template>
+    <v-row align="center" class="h-100" no-gutters>
+        <v-col cols="7" class="pa-8">
+            <span>Loading...</span>
+            <v-progress-linear indeterminate color="primary"/>
+        </v-col>
+        <v-col cols="5" align-self="stretch" class="flex-grow-0 pt-8">
+            <v-card height="100%" rounded="0 ts-xl" elevation="6">
+                <v-img src="@/assets/images/loading-card-image.jpg" cover class="h-100"/>
+            </v-card>
+        </v-col>
+    </v-row>
+</template>
