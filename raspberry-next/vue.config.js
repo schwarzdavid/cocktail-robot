@@ -8,6 +8,14 @@ module.exports = defineConfig({
             customVariables: [
                 '@/assets/scss/variables.scss'
             ]
-        },
+        }
     },
+
+    css: {
+        loaderOptions: {
+            scss: {
+                additionalData: '@import "~@/assets/scss/inject.scss";'
+            }
+        }
+    }
 });
