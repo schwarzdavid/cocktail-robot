@@ -23,7 +23,7 @@ export const vuetify = createVuetify({
                     warning: '#ff9e00',
                     error: '#d51414',
                     background: '#36323f',
-                    surface: '#454549'
+                    surface: '#2a2a2c'
                 }
             }
         }

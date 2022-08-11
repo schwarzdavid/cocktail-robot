@@ -1,0 +1,18 @@
+[
+    {
+        "name": "Whiskey",
+        "image": "jack-daniels.png"
+    },
+    {
+        "name": "Tequila",
+        "image": "sierra.png"
+    },
+    {
+        "name": "Vodka",
+        "image": "wyborowa.png"
+    },
+    {
+        "name": "Gin",
+        "image": "bombay-sapphire.png"
+    }
+]

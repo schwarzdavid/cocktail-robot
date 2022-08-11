@@ -18,10 +18,13 @@
     import {useRouter} from 'vue-router';
     import {MaintenanceRouteNames} from '@/router/constants';
     import {onMounted} from 'vue';
+    import {useIngredientStore} from '@/store/modules/IngredientStore';
 
     const router = useRouter();
+    const ingredientStore = useIngredientStore();
 
-    onMounted(() => {
+    onMounted(async() => {
+        await ingredientStore.loadDrinksFromDatabase()
         setTimeout(() => {
             router.push({
                 name: MaintenanceRouteNames.MAINTENANCE
