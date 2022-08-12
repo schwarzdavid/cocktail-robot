@@ -39,6 +39,6 @@ export const aliases: IconAliases = {
 
 export const lineicons: IconSet = {
     component: (props: IconProps) => h(props.tag || 'span', {
-        class: `lnil lnil-${props.icon}`
+        class: `lnil lnil-${props.icon.toString().trim()}`
     })
 }

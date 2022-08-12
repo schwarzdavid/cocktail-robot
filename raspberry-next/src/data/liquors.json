@@ -1,18 +1,18 @@
 [
     {
         "name": "Whiskey",
-        "image": "jack-daniels.png"
+        "image": "liquors/10-Whiskey.png"
     },
     {
         "name": "Tequila",
-        "image": "sierra.png"
-    },
-    {
-        "name": "Vodka",
-        "image": "wyborowa.png"
+        "image": "liquors/03-Tequila.png"
     },
     {
         "name": "Gin",
-        "image": "bombay-sapphire.png"
+        "image": "liquors/04-Gin.png"
+    },
+    {
+        "name": "Vodka",
+        "image": "liquors/05-Vodka.png"
     }
 ]

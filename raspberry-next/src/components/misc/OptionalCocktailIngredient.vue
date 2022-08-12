@@ -1,9 +1,14 @@
 <template>
+    <CocktailIngredient :ingredient="ingredient" :subtitle="subtitle" v-if="ingredient"/>
     <v-card elevation="6" class="cocktail-ingredient" v-ripple>
-        <img :src="imageSrc" class="cocktail-ingredient__image" :class="imageClass"/>
+        <div class="cocktail-ingredient__image">
+            <v-icon class="d-block ml-auto" color="secondary">
+                plus
+            </v-icon>
+        </div>
         <div class="cocktail-ingredient__content">
             <v-card-title class="cocktail-ingredient__title">
-                {{ingredient.name}}
+                Empty
             </v-card-title>
             <v-card-subtitle v-if="subtitle || $slots.subtitle" class="cocktail-ingredient__subtitle">
                 <slot name="subtitle">
@@ -15,16 +20,11 @@
 </template>
 
 <script lang="ts" setup>
-    import {Ingredient, IngredientType} from '@/store/types/Ingredient';
-    import {computed} from 'vue';
+    import CocktailIngredient from '@/components/misc/CocktailIngredient';
+    import {Ingredient} from '@/store/types/Ingredient';
 
-    const props = defineProps<{
-        ingredient: Ingredient,
+    defineProps<{
+        ingredient: Ingredient | null,
         subtitle?: string
     }>()
-
-    const imageSrc = computed(() => require('@/assets/images/ingredients/' + props.ingredient.image))
-    const imageClass = computed(() => props.ingredient.type === IngredientType.SOFTDRINK
-        ? 'cocktail-ingredient__image--transparentize'
-        : '')
 </script>

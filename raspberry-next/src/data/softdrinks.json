@@ -1,18 +1,18 @@
 [
     {
         "name": "Orange Juice",
-        "image": "happy-day-orange.png"
+        "image": "fruits/03-Orange.png"
     },
     {
         "name": "Apple Juice",
-        "image": "happy-day-apple.png"
+        "image": "fruits/04-Apple.png"
     },
     {
         "name": "Cranberry Juice",
-        "image": "happy-day-cranberry.png"
+        "image": "fruits/21-Cranberry.png"
     },
     {
         "name": "Mango Juice",
-        "image": "happy-day-mango.png"
+        "image": "fruits/16-Mango.png"
     }
 ]
